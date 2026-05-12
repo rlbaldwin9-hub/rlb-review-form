@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leave a Review | RLB Designs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:   #7a9e7e;
+      --sage-dk:#3d5c40;
+      --sage-lt:#e8f2e9;
+      --gold:   #c8a96e;
+      --gold-lt:#f5eddb;
+      --cream:  #f5f0e8;
+      --blush:  #f2e4e1;
+      --text:   #2c2c2a;
+      --muted:  #6b6b68;
+      --border: #c8a96e55;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2.5rem 1rem 4rem;
+    }
+
+    .page-wrap {
+      max-width: 660px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-mark {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dk) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--cream);
+      font-weight: 600;
+      margin: 0 auto 1.25rem;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--sage-dk);
+      margin-bottom: 0.4rem;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      font-weight: 300;
+    }
+
+    .header-divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--sage));
+      margin: 1.2rem auto 0;
+      border-radius: 2px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 2rem 2.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--sage-dk);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Fields ── */
+    .field { margin-bottom: 1.25rem; }
+    .field:last-child { margin-bottom: 0; }
+
+    label.field-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.4rem;
+    }
+
+    .req { color: var(--gold); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px #7a9e7e22;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a9e7e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+      line-height: 1.65;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 500px) {
+      .row-2 { grid-template-columns: 1fr; }
+      .card { padding: 1.5rem 1.25rem; }
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    /* ── Stars ── */
+    .stars-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 0;
+    }
+
+    .star {
+      font-size: 32px;
+      cursor: pointer;
+      color: #ddd;
+      transition: color 0.12s, transform 0.1s;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .star.lit { color: var(--gold); }
+    .star:hover { transform: scale(1.18); }
+
+    .star-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-left: 10px;
+      font-style: italic;
+      min-width: 90px;
+    }
+
+    /* ── Reader type chips ── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 4px 0;
+    }
+
+    .chip input { display: none; }
+
+    .chip label {
+      display: inline-block;
+      padding: 7px 16px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--muted);
+      background: transparent;
+      transition: all 0.15s;
+    }
+
+    .chip input:checked + label {
+      background: var(--sage);
+      color: var(--cream);
+      border-color: var(--sage);
+      font-weight: 700;
+    }
+
+    .chip label:hover {
+      border-color: var(--sage);
+      color: var(--sage-dk);
+    }
+
+    /* ── Consent ── */
+    .consent-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--sage-lt);
+      border: 1px solid #7a9e7e44;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .consent-box input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--sage);
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .consent-box span {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Submit button ── */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--sage-dk);
+      color: var(--cream);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 1.5rem;
+    }
+
+    .btn-submit:hover { background: #4d7450; }
+    .btn-submit:active { transform: scale(0.99); }
+    .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* ── Success screen ── */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .success-icon {
+      font-size: 52px;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .success h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--sage-dk);
+      margin-bottom: 0.5rem;
+    }
+
+    .success p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .success a {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: var(--sage-dk);
+      font-size: 13px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .footer a {
+      color: var(--sage-dk);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-mark">R</div>
+    <h1>Share Your Review</h1>
+    <p>RLB DESIGNS · RLBDESIGNS.COM</p>
+    <div class="header-divider"></div>
+  </div>
+
+  <!-- Form -->
+  <form id="review-form" novalidate>
+
+    <!-- Book Info -->
+    <div class="card">
+      <div class="card-title">About the Book</div>
+
+      <div class="field">
+        <label class="field-label" for="book-category">Book Category <span class="req">*</span></label>
+        <select id="book-category" name="book_category" required>
+          <option value="">Select a category…</option>
+          <optgroup label="Children's Books">
+            <option>Children's Book — Ages 0–4</option>
+            <option>Children's Book — Ages 5–9</option>
+            <option>Children's Book — Ages 9–13</option>
+          </optgroup>
+          <optgroup label="Cookbooks">
+            <option>Cookbook / Recipe Collection</option>
+          </optgroup>
+          <optgroup label="Coloring Books">
+            <option>Adult Coloring Book</option>
+            <option>Children's Coloring Book</option>
+            <option>Zentangle / Mandala Book</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option>Writing Journal / Activity Book</option>
+            <option>Other</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="book-title">Book Title <span class="req">*</span></label>
+        <input type="text" id="book-title" name="book_title" placeholder="e.g. The Enchanted Storyteller's Studio" required />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="where-purchased">Where Did You Purchase?</label>
+        <select id="where-purchased" name="where_purchased">
+          <option value="">Select…</option>
+          <option>Amazon</option>
+          <option>RLBDesigns.com</option>
+          <option>Barnes &amp; Noble</option>
+          <option>Gift from someone else</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Star Rating -->
+    <div class="card">
+      <div class="card-title">Your Rating</div>
+
+      <div class="field">
+        <label class="field-label">Overall Rating <span class="req">*</span></label>
+        <div class="stars-row">
+          <span class="star" data-val="1" role="button" aria-label="1 star" tabindex="0">★</span>
+          <span class="star" data-val="2" role="button" aria-label="2 stars" tabindex="0">★</span>
+          <span class="star" data-val="3" role="button" aria-label="3 stars" tabindex="0">★</span>
+          <span class="star" data-val="4" role="button" aria-label="4 stars" tabindex="0">★</span>
+          <span class="star" data-val="5" role="button" aria-label="5 stars" tabindex="0">★</span>
+          <span class="star-label" id="star-text">Tap to rate</span>
+        </div>
+        <input type="hidden" id="rating-val" name="rating" value="" />
+      </div>
+    </div>
+
+    <!-- Review Text -->
+    <div class="card">
+      <div class="card-title">Your Review</div>
+
+      <div class="field">
+        <label class="field-label" for="review-headline">Review Headline <span class="req">*</span></label>
+        <input type="text" id="review-headline" name="review_headline" placeholder="Sum it up in a few words…" required />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="review-body">Written Review <span class="req">*</span></label>
+        <textarea id="review-body" name="review_body" placeholder="What did you love? Who would you recommend this to? What made it special?" required></textarea>
+        <p class="hint">Minimum 20 characters. Your words help other readers find their next favorite book!</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">I am reading as…</label>
+        <div class="chips">
+          <div class="chip"><input type="radio" name="reader_type" id="r1" value="A Parent"><label for="r1">A Parent</label></div>
+          <div class="chip"><input type="radio" name="reader_type" id="r2" value="A Grandparent"><label for="r2">A Grandparent</label></div>
+          <div class="chip"><input type="radio" name="reader_type" id="r3" value="An Educator"><label for="r3">An Educator</label></div>
+          <div class="chip"><input type="radio" name="reader_type" id="r4" value="An Adult Reader"><label for="r4">An Adult Reader</label></div>
+          <div class="chip"><input type="radio" name="reader_type" id="r5" value="A Young Reader"><label for="r5">A Young Reader</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About You -->
+    <div class="card">
+      <div class="card-title">About You <span style="font-family:'Lato',sans-serif;font-size:12px;font-weight:300;font-style:italic;color:var(--muted);">optional</span></div>
+
+      <div class="row-2">
+        <div class="field">
+          <label class="field-label" for="fname">First Name</label>
+          <input type="text" id="fname" name="first_name" placeholder="Jane" />
+        </div>
+        <div class="field">
+          <label class="field-label" for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="for follow-up only" />
+          <p class="hint">Never shared or sold.</p>
+        </div>
+      </div>
+
+      <div class="consent-box">
+        <input type="checkbox" id="consent" name="consent" />
+        <span>I give RLB Designs permission to share my review (with first name only) on rlbdesigns.com and social media. My email address, if provided, will never be published.</span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit" id="submit-btn">Submit My Review ✦</button>
+
+  </form>
+
+  <!-- Success Screen -->
+  <div class="success" id="success-screen">
+    <span class="success-icon">✦</span>
+    <h2>Thank You!</h2>
+    <p>Your review has been received and means the world.<br>Happy reading — Rachel</p>
+    <a href="https://www.rlbdesigns.com">Return to RLBDesigns.com</a>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 <a href="https://www.rlbdesigns.com">RLB Designs</a> · All Rights Reserved
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+  /* ── Star rating ── */
+  const stars = document.querySelectorAll('.star');
+  const starText = document.getElementById('star-text');
+  const ratingInput = document.getElementById('rating-val');
+  const labels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
+  let currentRating = 0;
+
+  function paintStars(n) {
+    stars.forEach(s => s.classList.toggle('lit', +s.dataset.val <= n));
+  }
+
+  stars.forEach(s => {
+    s.addEventListener('mouseover', () => { paintStars(+s.dataset.val); starText.textContent = labels[+s.dataset.val]; });
+    s.addEventListener('mouseout',  () => { paintStars(currentRating); starText.textContent = currentRating ? labels[currentRating] : 'Tap to rate'; });
+    s.addEventListener('click', () => {
+      currentRating = +s.dataset.val;
+      ratingInput.value = currentRating;
+      paintStars(currentRating);
+      starText.textContent = labels[currentRating];
+    });
+    s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') s.click(); });
+  });
+
+  /* ── Form submit ── */
+  document.getElementById('review-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const category = document.getElementById('book-category').value;
+    const title    = document.getElementById('book-title').value.trim();
+    const headline = document.getElementById('review-headline').value.trim();
+    const body     = document.getElementById('review-body').value.trim();
+
+    if (!category)          { alert('Please select a book category.'); return; }
+    if (!title)             { alert('Please enter the book title.'); return; }
+    if (!currentRating)     { alert('Please select a star rating.'); return; }
+    if (!headline)          { alert('Please add a review headline.'); return; }
+    if (body.length < 20)   { alert('Please write at least a sentence in your review.'); return; }
+
+    /* ── Send to Formspree (replace YOUR_FORM_ID below) ── */
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const formData = {
+      book_category:  category,
+      book_title:     title,
+      where_purchased: document.getElementById('where-purchased').value,
+      rating:         currentRating + ' stars — ' + labels[currentRating],
+      review_headline: headline,
+      review_body:    body,
+      reader_type:    document.querySelector('input[name="reader_type"]:checked')?.value || 'Not specified',
+      first_name:     document.getElementById('fname').value.trim(),
+      email:          document.getElementById('email').value.trim(),
+      consent:        document.getElementById('consent').checked ? 'Yes' : 'No'
+    };
+
+    fetch('https://formspree.io/f/xojrrpbn', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body:    JSON.stringify(formData)
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.ok || data.next) {
+        document.getElementById('review-form').style.display = 'none';
+        document.getElementById('success-screen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert('Something went wrong. Please try again or email rachel@rlbdesigns.com');
+        btn.disabled = false;
+        btn.textContent = 'Submit My Review ✦';
+      }
+    })
+    .catch(() => {
+      alert('Could not send — please check your connection and try again.');
+      btn.disabled = false;
+      btn.textContent = 'Submit My Review ✦';
+    });
+  });
+</script>
+
+</body>
+</html>
