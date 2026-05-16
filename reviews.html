@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reader Reviews | RLB Designs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:    #7a9e7e;
+      --sage-dk: #3d5c40;
+      --sage-lt: #e8f2e9;
+      --gold:    #c8a96e;
+      --gold-lt: #f5eddb;
+      --cream:   #f5f0e8;
+      --blush:   #f2e4e1;
+      --text:    #2c2c2a;
+      --muted:   #6b6b68;
+      --border:  #c8a96e44;
+      --white:   #ffffff;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Hero header ── */
+    .hero {
+      background: linear-gradient(160deg, var(--sage-dk) 0%, #2a4a2d 100%);
+      padding: 3.5rem 1.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(200,169,110,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--gold);
+      margin: 0 auto 1.25rem;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .hero p {
+      font-size: 13px;
+      color: rgba(245,240,232,0.65);
+      letter-spacing: 0.12em;
+      font-weight: 300;
+      position: relative;
+    }
+
+    .hero-divider {
+      width: 50px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1.25rem auto 0;
+      position: relative;
+    }
+
+    /* ── Summary bar ── */
+    .summary-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .summary-stat {
+      text-align: center;
+    }
+
+    .summary-stat .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--sage-dk);
+      line-height: 1;
+    }
+
+    .summary-stat .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .summary-stars {
+      color: var(--gold);
+      font-size: 20px;
+      letter-spacing: 2px;
+    }
+
+    .summary-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+    }
+
+    /* ── Main layout ── */
+    .main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── Category tabs ── */
+    .tabs-wrap {
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .tab {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--muted);
+      background: var(--white);
+      font-family: 'Lato', sans-serif;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab .count {
+      background: var(--sage-lt);
+      color: var(--sage-dk);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+    }
+
+    .tab:hover { border-color: var(--sage); color: var(--sage-dk); }
+    .tab.active {
+      background: var(--sage-dk);
+      color: var(--cream);
+      border-color: var(--sage-dk);
+      font-weight: 700;
+    }
+    .tab.active .count {
+      background: rgba(255,255,255,0.2);
+      color: var(--cream);
+    }
+
+    /* ── Review grid ── */
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ── Review card ── */
+    .review-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .review-card:hover {
+      box-shadow: 0 6px 24px rgba(61,92,64,0.1);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-stars {
+      color: var(--gold);
+      font-size: 16px;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .card-category-pill {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--sage-dk);
+      background: var(--sage-lt);
+      padding: 3px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .card-book {
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+      letter-spacing: 0.03em;
+    }
+
+    .card-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--sage-dk);
+      line-height: 1.35;
+    }
+
+    .card-body {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.65;
+      flex: 1;
+      position: relative;
+    }
+
+    .card-body.clamped {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .read-more {
+      background: none;
+      border: none;
+      color: var(--sage);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid #f0ebe0;
+    }
+
+    .card-reviewer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dk) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--cream);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .reviewer-info .name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .reviewer-info .reader-type {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .card-date {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── Empty / loading states ── */
+    .state-box {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    .state-box .icon { font-size: 40px; margin-bottom: 1rem; display: block; }
+    .state-box p { font-size: 15px; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer a { color: var(--sage-dk); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .summary-bar { gap: 1.25rem; }
+      .summary-divider { display: none; }
+      .review-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-logo">R</div>
+  <h1>Reader Reviews</h1>
+  <p>RLB DESIGNS · RLBDESIGNS.COM</p>
+  <div class="hero-divider"></div>
+</div>
+
+<!-- Summary bar -->
+<div class="summary-bar" id="summary-bar">
+  <div class="summary-stat">
+    <div class="num" id="total-count">—</div>
+    <div class="lbl">Total Reviews</div>
+  </div>
+  <div class="summary-divider"></div>
+  <div class="summary-stat">
+    <div class="summary-stars" id="avg-stars">★★★★★</div>
+    <div class="lbl" id="avg-label">Average Rating</div>
+  </div>
+  <div class="summary-divider"></div>
+  <div class="summary-stat">
+    <div class="num" id="five-star-count">—</div>
+    <div class="lbl">5-Star Reviews</div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabs-row">
+      <button class="tab active" data-cat="All" onclick="filterCategory('All', this)">
+        All Reviews <span class="count" id="count-all">0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="review-grid" id="review-grid">
+    <div class="state-box">
+      <span class="icon">✦</span>
+      <p>Loading reviews…</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  &copy; 2025 <a href="https://www.rlbdesigns.com">RLB Designs</a> · All Rights Reserved
+  &nbsp;·&nbsp; <a href="./index.html">Leave a Review</a>
+</div>
+
+<script>
+  // ── REPLACE THIS URL with your deployed Google Apps Script Web App URL ──
+  const SCRIPT_URL = "YOUR_APPS_SCRIPT_URL";
+
+  // ── Category short labels for pills ──
+  const CAT_SHORT = {
+    "Children's Book — Ages 0–4":   "Children's 0–4",
+    "Children's Book — Ages 5–9":   "Children's 5–9",
+    "Children's Book — Ages 9–13":  "Children's 9–13",
+    "Cookbook / Recipe Collection":  "Cookbooks",
+    "Adult Coloring Book":           "Coloring",
+    "Children's Coloring Book":      "Coloring",
+    "Zentangle / Mandala Book":      "Coloring",
+    "Writing Journal / Activity Book":"Journals",
+    "Other":                         "Other"
+  };
+
+  // Category grouping for tabs
+  const CAT_GROUPS = {
+    "Children's Books":  ["Children's Book — Ages 0–4","Children's Book — Ages 5–9","Children's Book — Ages 9–13"],
+    "Cookbooks":         ["Cookbook / Recipe Collection"],
+    "Coloring Books":    ["Adult Coloring Book","Children's Coloring Book","Zentangle / Mandala Book"],
+    "Journals":          ["Writing Journal / Activity Book"],
+    "Other":             ["Other"]
+  };
+
+  const starLabels = ['','Poor','Fair','Good','Great','Outstanding!'];
+
+  let allReviews = [];
+  let activeCategory = "All";
+
+  // ── Fetch reviews from Apps Script ──
+  async function loadReviews() {
+    const grid = document.getElementById('review-grid');
+
+    if (SCRIPT_URL === "YOUR_APPS_SCRIPT_URL") {
+      grid.innerHTML = `<div class="state-box">
+        <span class="icon">⚙️</span>
+        <p><strong>Setup needed:</strong> Replace <code>YOUR_APPS_SCRIPT_URL</code> in reviews.html with your deployed Apps Script URL.</p>
+      </div>`;
+      updateSummary([]);
+      buildTabs([]);
+      return;
+    }
+
+    try {
+      const res  = await fetch(SCRIPT_URL + "?t=" + Date.now());
+      const data = await res.json();
+      allReviews = data.reviews || [];
+      updateSummary(allReviews);
+      buildTabs(allReviews);
+      renderReviews(allReviews);
+    } catch (err) {
+      grid.innerHTML = `<div class="state-box">
+        <span class="icon">⚠️</span>
+        <p>Could not load reviews. Please check back soon.</p>
+      </div>`;
+    }
+  }
+
+  // ── Build category tabs dynamically ──
+  function buildTabs(reviews) {
+    const tabsRow  = document.getElementById('tabs-row');
+    const countAll = document.getElementById('count-all');
+    countAll.textContent = reviews.length;
+
+    // Count per group
+    const groupCounts = {};
+    reviews.forEach(r => {
+      const cat = r.bookCategory || "Other";
+      for (const [group, cats] of Object.entries(CAT_GROUPS)) {
+        if (cats.includes(cat)) {
+          groupCounts[group] = (groupCounts[group] || 0) + 1;
+          break;
+        }
+      }
+    });
+
+    // Add a tab for each group that has reviews
+    Object.entries(groupCounts).forEach(([group, count]) => {
+      const btn = document.createElement('button');
+      btn.className = 'tab';
+      btn.dataset.cat = group;
+      btn.innerHTML = `${group} <span class="count">${count}</span>`;
+      btn.onclick = () => filterCategory(group, btn);
+      tabsRow.appendChild(btn);
+    });
+  }
+
+  // ── Filter by category group ──
+  function filterCategory(group, btn) {
+    activeCategory = group;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    if (group === "All") {
+      renderReviews(allReviews);
+    } else {
+      const cats = CAT_GROUPS[group] || [];
+      renderReviews(allReviews.filter(r => cats.includes(r.bookCategory)));
+    }
+  }
+
+  // ── Render review cards ──
+  function renderReviews(reviews) {
+    const grid = document.getElementById('review-grid');
+
+    if (!reviews.length) {
+      grid.innerHTML = `<div class="state-box">
+        <span class="icon">✦</span>
+        <p>No reviews in this category yet — be the first!</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = reviews.map((r, i) => {
+      const stars    = buildStars(r.rating);
+      const initial  = (r.displayName || "R")[0].toUpperCase();
+      const dateStr  = formatDate(r.timestamp);
+      const pill     = CAT_SHORT[r.bookCategory] || r.bookCategory || "Book";
+      const bodyId   = `body-${i}`;
+      const btnId    = `btn-${i}`;
+      const longBody = (r.reviewBody || "").length > 280;
+
+      return `
+        <div class="review-card" style="animation-delay:${i * 0.05}s">
+          <div class="card-top">
+            <div class="card-stars">${stars}</div>
+            <span class="card-category-pill">${escHtml(pill)}</span>
+          </div>
+          <div class="card-book">📖 ${escHtml(r.bookTitle || "RLB Designs Book")}</div>
+          <div class="card-headline">${escHtml(r.reviewHeadline || "")}</div>
+          <div class="card-body${longBody ? ' clamped' : ''}" id="${bodyId}">${escHtml(r.reviewBody || "")}</div>
+          ${longBody ? `<button class="read-more" id="${btnId}" style="display:block" onclick="toggleBody('${bodyId}','${btnId}')">Read more →</button>` : ''}
+          <div class="card-footer">
+            <div class="card-reviewer">
+              <div class="avatar">${initial}</div>
+              <div class="reviewer-info">
+                <div class="name">${escHtml(r.displayName || "A Reader")}</div>
+                ${r.readerType ? `<div class="reader-type">${escHtml(r.readerType)}</div>` : ''}
+              </div>
+            </div>
+            <div class="card-date">${dateStr}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── Summary bar ──
+  function updateSummary(reviews) {
+    document.getElementById('total-count').textContent = reviews.length;
+    const fiveStars = reviews.filter(r => r.rating === 5).length;
+    document.getElementById('five-star-count').textContent = fiveStars;
+
+    if (reviews.length) {
+      const avg = reviews.reduce((s, r) => s + (r.rating || 0), 0) / reviews.length;
+      const filled = Math.round(avg);
+      document.getElementById('avg-stars').textContent = "★".repeat(filled) + "☆".repeat(5 - filled);
+      document.getElementById('avg-label').textContent = `Avg ${avg.toFixed(1)} / 5`;
+    }
+  }
+
+  // ── Helpers ──
+  function buildStars(n) {
+    return "★".repeat(Math.min(n, 5)) + "☆".repeat(Math.max(0, 5 - n));
+  }
+
+  function formatDate(ts) {
+    if (!ts) return "";
+    try {
+      return new Date(ts).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    } catch { return ""; }
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  }
+
+  function toggleBody(bodyId, btnId) {
+    const body = document.getElementById(bodyId);
+    const btn  = document.getElementById(btnId);
+    const clamped = body.classList.toggle('clamped');
+    btn.textContent = clamped ? 'Read more →' : 'Show less ↑';
+  }
+
+  // ── Init ──
+  loadReviews();
+</script>
+
+</body>
+</html>
