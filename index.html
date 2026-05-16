@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+https://formspree.io/f/<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -545,9 +545,9 @@
       consent:        document.getElementById('consent').checked ? 'Yes' : 'No'
     };
 
-    fetch('https://formspree.io/f/xojrrpbn', {
+    fetch('https://script.google.com/macros/s/AKfycbxJE4TdkqeTrRwLxh6x54tQ6pMKXo-v2FJVg_PVuHeRArxG1TGkKFPcw6A26c6bWvT4/exec', {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: {},
       body:    JSON.stringify(formData)
     })
     .then(r => r.json())
