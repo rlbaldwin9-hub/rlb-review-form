@@ -20,6 +20,8 @@
       --text:   #2c2c2a;
       --muted:  #6b6b68;
       --border: #c8a96e55;
+      --red-lt: #fdf0f0;
+      --red-bd: #e8c0c0;
     }
 
     body {
@@ -83,7 +85,10 @@
 
     .req { color: var(--gold); margin-left: 2px; }
 
-    input[type="text"], input[type="email"], select, textarea {
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
       width: 100%; padding: 10px 14px;
       border: 1px solid var(--border); border-radius: 7px;
       font-family: 'Lato', sans-serif; font-size: 14px;
@@ -112,53 +117,33 @@
 
     .hint { font-size: 11px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
-    /* ── Stars ── */
- /* ── CSS-only star rating ── */
-.stars-css {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  gap: 2px;
-  padding: 4px 0;
-  width: fit-content;
-}
+    /* ── CSS-only star rating ── */
+    .stars-css {
+      display: flex; flex-direction: row-reverse;
+      align-items: center; gap: 2px; padding: 4px 0; width: fit-content;
+    }
 
-.stars-css input[type="radio"] { display: none; }
+    .stars-css input[type="radio"] { display: none; }
 
-.stars-css label {
-  font-size: 32px;
-  color: #ddd;
-  cursor: pointer;
-  transition: color 0.12s, transform 0.1s;
-  line-height: 1;
-}
+    .stars-css label {
+      font-size: 32px; color: #ddd; cursor: pointer;
+      transition: color 0.12s, transform 0.1s; line-height: 1;
+    }
 
-/* Hover — light up this star and all stars after it (which are visually before it) */
-.stars-css label:hover,
-.stars-css label:hover ~ label {
-  color: var(--gold);
-  transform: scale(1.12);
-}
+    .stars-css label:hover,
+    .stars-css label:hover ~ label { color: var(--gold); transform: scale(1.12); }
 
-/* Selected — keep lit after click */
-.stars-css input:checked ~ label {
-  color: var(--gold);
-}
+    .stars-css input:checked ~ label { color: var(--gold); }
 
-.star-label {
-  font-size: 13px;
-  color: var(--muted);
-  margin-left: 10px;
-  font-style: italic;
-  min-width: 90px;
-  /* Pull it out of the reverse flow */
-  order: 99;
-}
+    .star-label {
+      font-size: 13px; color: var(--muted); margin-left: 10px;
+      font-style: italic; min-width: 90px; order: 99;
+    }
 
     /* ── Reader type chips ── */
     .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0; }
 
-    .chip input { display: none; }
+    .chip input[type="radio"] { display: none; }
 
     .chip label {
       display: inline-block; padding: 7px 16px;
@@ -167,7 +152,7 @@
       background: transparent; transition: all 0.15s;
     }
 
-    .chip input:checked + label {
+    .chip input[type="radio"]:checked + label {
       background: var(--sage); color: var(--cream);
       border-color: var(--sage); font-weight: 700;
     }
@@ -175,29 +160,84 @@
     .chip label:hover { border-color: var(--sage); color: var(--sage-dk); }
 
     /* ── Other reader input ── */
-    #other-reader-wrap {
-      display: none;
-      margin-top: 12px;
-      width: 100%;
+    #other-reader-wrap { display: none; margin-top: 12px; }
+    #other-reader-wrap input[type="text"] { max-width: 320px; }
+
+    /* ── Disclaimer box ── */
+    .disclaimer-box {
+      background: var(--gold-lt);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 1.25rem;
     }
 
-    #other-reader-text {
-      max-width: 320px;
+    .disclaimer-box p {
+      font-size: 12px;
+      color: #5a4a2a;
+      line-height: 1.65;
     }
 
-    /* ── Consent ── */
-    .consent-box {
-      display: flex; align-items: flex-start; gap: 10px;
-      background: var(--sage-lt); border: 1px solid #7a9e7e44;
-      border-radius: 8px; padding: 12px 14px;
+    .disclaimer-box strong {
+      font-weight: 700;
+      color: #3d2e0f;
     }
 
-    .consent-box input[type="checkbox"] {
-      width: 16px; height: 16px; accent-color: var(--sage);
+    /* ── Consent Yes/No ── */
+    .consent-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+
+    .consent-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .consent-option:hover { border-color: var(--sage); }
+
+    .consent-option input[type="radio"] {
+      width: 16px; height: 16px;
+      accent-color: var(--sage);
+      flex-shrink: 0; margin-top: 2px; cursor: pointer;
+    }
+
+    .consent-option .consent-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+    .consent-option .consent-text strong { font-weight: 700; }
+    .consent-option .consent-text span { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+
+    .consent-option.yes-option { background: var(--sage-lt); border-color: #7a9e7e44; }
+    .consent-option.yes-option:has(input:checked) { border-color: var(--sage); background: #d4ebd6; }
+
+    .consent-option.no-option { background: var(--red-lt); border-color: var(--red-bd); }
+    .consent-option.no-option:has(input:checked) { border-color: #c0726e; background: #fce0e0; }
+
+    /* ── Age confirmation checkbox ── */
+    .age-confirm {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8f6ff;
+      border: 1px solid #c8bfea;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .age-confirm input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: #7060a8;
       cursor: pointer; flex-shrink: 0; margin-top: 2px;
     }
 
-    .consent-box span { font-size: 12px; color: var(--muted); line-height: 1.55; }
+    .age-confirm span { font-size: 12px; color: var(--muted); line-height: 1.55; }
 
     /* ── Submit button ── */
     .btn-submit {
@@ -297,6 +337,23 @@
           <option>Other</option>
         </select>
       </div>
+
+      <div class="field">
+        <label class="field-label" for="how-heard">How Did You Hear About This Book?</label>
+        <select id="how-heard" name="how_heard">
+          <option value="">Select…</option>
+          <option>Amazon search</option>
+          <option>RLBDesigns.com website</option>
+          <option>Facebook</option>
+          <option>Instagram</option>
+          <option>Pinterest</option>
+          <option>TikTok</option>
+          <option>Friend or family recommendation</option>
+          <option>Educator or librarian recommendation</option>
+          <option>Google search</option>
+          <option>Other</option>
+        </select>
+      </div>
     </div>
 
     <!-- Star Rating -->
@@ -305,15 +362,20 @@
 
       <div class="field">
         <label class="field-label">Overall Rating <span class="req">*</span></label>
-       <div class="stars-css">
-  <input type="radio" name="star_select" id="s5" value="5"><label for="s5" title="Outstanding!">★</label>
-  <input type="radio" name="star_select" id="s4" value="4"><label for="s4" title="Great">★</label>
-  <input type="radio" name="star_select" id="s3" value="3"><label for="s3" title="Good">★</label>
-  <input type="radio" name="star_select" id="s2" value="2"><label for="s2" title="Fair">★</label>
-  <input type="radio" name="star_select" id="s1" value="1"><label for="s1" title="Poor">★</label>
-  <span class="star-label" id="star-text">Tap to rate</span>
-</div>
-<input type="hidden" id="rating-val" name="rating" value="" />
+        <div class="stars-css">
+          <input type="radio" name="star_select" id="s5" value="5">
+          <label for="s5" title="Outstanding!">★</label>
+          <input type="radio" name="star_select" id="s4" value="4">
+          <label for="s4" title="Great">★</label>
+          <input type="radio" name="star_select" id="s3" value="3">
+          <label for="s3" title="Good">★</label>
+          <input type="radio" name="star_select" id="s2" value="2">
+          <label for="s2" title="Fair">★</label>
+          <input type="radio" name="star_select" id="s1" value="1">
+          <label for="s1" title="Poor">★</label>
+          <span class="star-label" id="star-text">Tap to rate</span>
+        </div>
+        <input type="hidden" id="rating-val" name="rating" value="" />
       </div>
     </div>
 
@@ -334,22 +396,35 @@
 
       <div class="field">
         <label class="field-label">I am reading as…</label>
-
-        <!-- Chips row -->
         <div class="chips">
-          <div class="chip"><input type="radio" name="reader_type" id="r1" value="A Parent"><label for="r1">A Parent</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r2" value="A Grandparent"><label for="r2">A Grandparent</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r3" value="An Educator"><label for="r3">An Educator</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r4" value="An Adult Reader"><label for="r4">An Adult Reader</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r5" value="A Young Reader"><label for="r5">A Young Reader</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r6" value="Other"><label for="r6">Other…</label></div>
+          <div class="chip">
+            <input type="radio" name="reader_type" id="r1" value="A Parent">
+            <label for="r1">A Parent</label>
+          </div>
+          <div class="chip">
+            <input type="radio" name="reader_type" id="r2" value="A Grandparent">
+            <label for="r2">A Grandparent</label>
+          </div>
+          <div class="chip">
+            <input type="radio" name="reader_type" id="r3" value="An Educator">
+            <label for="r3">An Educator</label>
+          </div>
+          <div class="chip">
+            <input type="radio" name="reader_type" id="r4" value="An Adult Reader">
+            <label for="r4">An Adult Reader</label>
+          </div>
+          <div class="chip">
+            <input type="radio" name="reader_type" id="r5" value="A Young Reader">
+            <label for="r5">A Young Reader</label>
+          </div>
+          <div class="chip">
+            <input type="radio" name="reader_type" id="r6" value="Other">
+            <label for="r6">Other…</label>
+          </div>
         </div>
-
-        <!-- Other text field — hidden until Other is selected -->
         <div id="other-reader-wrap">
           <input type="text" id="other-reader-text" placeholder="Tell us a little about yourself…" />
         </div>
-
       </div>
     </div>
 
@@ -368,11 +443,57 @@
           <p class="hint">Never shared or sold.</p>
         </div>
       </div>
+    </div>
 
-      <div class="consent-box">
-        <input type="checkbox" id="consent" name="consent" />
-        <span>I give RLB Designs permission to share my review (with first name only) on rlbdesigns.com and social media. My email address, if provided, will never be published.</span>
+    <!-- Consent & Legal -->
+    <div class="card">
+      <div class="card-title">Permissions &amp; Confirmation</div>
+
+      <!-- Disclaimer -->
+      <div class="disclaimer-box">
+        <p>
+          <strong>Before you submit, please read:</strong> By submitting this review you confirm it reflects
+          your own honest, first-hand experience with this book. Reviews may be lightly edited for
+          spelling or length but will <strong>never</strong> misrepresent your words or opinion.
+          Your email address, if provided, will never be published, sold, or shared with any
+          third party. RLB Designs reserves the right to decline publication of reviews that
+          contain offensive language, personal attacks, or content unrelated to the book.
+        </p>
       </div>
+
+      <!-- Yes / No consent -->
+      <label class="field-label" style="margin-bottom:0.6rem;">
+        May we share your review publicly? <span class="req">*</span>
+      </label>
+
+      <div class="consent-options">
+        <label class="consent-option yes-option">
+          <input type="radio" name="public_consent" id="consent-yes" value="Yes — approved for public use" />
+          <div class="consent-text">
+            <strong>✅ Yes, share my review</strong>
+            <span>I give RLB Designs permission to publish my review (with first name only) on rlbdesigns.com and social media including Facebook, Instagram, Pinterest, and TikTok.</span>
+          </div>
+        </label>
+
+        <label class="consent-option no-option">
+          <input type="radio" name="public_consent" id="consent-no" value="No — private only" />
+          <div class="consent-text">
+            <strong>⛔ No, keep my review private</strong>
+            <span>I prefer my review to be used for internal feedback only and not published publicly anywhere. My name and review will never be shared.</span>
+          </div>
+        </label>
+      </div>
+
+      <!-- Age confirmation -->
+      <div class="age-confirm">
+        <input type="checkbox" id="age-confirm" name="age_confirmed" />
+        <span>
+          <strong>I confirm</strong> that I am 18 years of age or older, or that I am the
+          parent or legal guardian of the child this review is about, and I have the authority
+          to submit this review and grant the permissions selected above.
+        </span>
+      </div>
+
     </div>
 
     <button type="submit" class="btn-submit" id="submit-btn">Submit My Review ✦</button>
@@ -394,75 +515,100 @@
 </div><!-- /page-wrap -->
 
 <script>
- /* ── CSS star rating — capture value on change ── */
-var starLabels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
-var currentRating = 0;
+  /* ================================================================
+     STAR RATING — CSS radio buttons, JS captures the value
+  ================================================================ */
+  var starLabels    = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
+  var currentRating = 0;
 
-document.querySelectorAll('input[name="star_select"]').forEach(function(radio) {
-  radio.addEventListener('change', function() {
-    currentRating = parseInt(this.value);
-    document.getElementById('rating-val').value = currentRating;
-    document.getElementById('star-text').textContent = starLabels[currentRating];
-  });
-});
-    s.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { s.click(); } });
-  });
-
-  /* ── Show / hide Other text field ── */
-  document.querySelectorAll('input[name="reader_type"]').forEach(function(radio) {
+  document.querySelectorAll('input[name="star_select"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
-      var wrap = document.getElementById('other-reader-wrap');
-      if (this.value === 'Other') {
-        wrap.style.display = 'block';
-      } else {
-        wrap.style.display = 'none';
-        document.getElementById('other-reader-text').value = '';
-      }
+      currentRating = parseInt(this.value, 10);
+      document.getElementById('rating-val').value = currentRating;
+      document.getElementById('star-text').textContent = starLabels[currentRating];
     });
   });
 
-  /* ── Form submit ── */
+  /* ================================================================
+     OTHER READER TYPE — show / hide text box
+     Triple-layered for sandbox compatibility
+  ================================================================ */
+  function checkOtherReader() {
+    var selected = document.querySelector('input[name="reader_type"]:checked');
+    var wrap     = document.getElementById('other-reader-wrap');
+    if (selected && selected.value === 'Other') {
+      wrap.style.display = 'block';
+    } else {
+      wrap.style.display = 'none';
+      document.getElementById('other-reader-text').value = '';
+    }
+  }
+
+  document.querySelectorAll('input[name="reader_type"]').forEach(function(radio) {
+    radio.addEventListener('change', checkOtherReader);
+    radio.addEventListener('click',  checkOtherReader);
+  });
+
+  document.querySelectorAll('.chip label').forEach(function(lbl) {
+    lbl.addEventListener('click', function() {
+      setTimeout(checkOtherReader, 10);
+    });
+  });
+
+  /* ================================================================
+     FORM SUBMIT
+  ================================================================ */
   document.getElementById('review-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    /* ── Validation ── */
     var category = document.getElementById('book-category').value;
     var title    = document.getElementById('book-title').value.trim();
     var headline = document.getElementById('review-headline').value.trim();
     var body     = document.getElementById('review-body').value.trim();
+    var consent  = document.querySelector('input[name="public_consent"]:checked');
+    var ageBox   = document.getElementById('age-confirm');
 
     if (!category)        { alert('Please select a book category.'); return; }
     if (!title)           { alert('Please enter the book title.'); return; }
     if (!currentRating)   { alert('Please select a star rating.'); return; }
     if (!headline)        { alert('Please add a review headline.'); return; }
     if (body.length < 20) { alert('Please write at least a sentence in your review.'); return; }
+    if (!consent)         { alert('Please select Yes or No for the public sharing permission.'); return; }
+    if (!ageBox.checked)  { alert('Please confirm you are 18 or older, or a parent/guardian submitting on behalf of a child.'); return; }
 
     var btn = document.getElementById('submit-btn');
-    btn.disabled = true;
+    btn.disabled    = true;
     btn.textContent = 'Sending…';
 
+    /* ── Reader type ── */
     var checkedReader = document.querySelector('input[name="reader_type"]:checked');
     var readerValue   = checkedReader ? checkedReader.value : '';
     var readerType;
     if (readerValue === 'Other') {
       var otherText = document.getElementById('other-reader-text').value.trim();
-      readerType = 'Other: ' + (otherText || 'Not specified');
+      readerType = 'Other: ' + (otherText ? otherText : 'Not specified');
     } else {
-      readerType = readerValue || 'Not specified';
+      readerType = readerValue ? readerValue : 'Not specified';
     }
 
+    /* ── Build payload ── */
     var formData = {
       book_category:   category,
       book_title:      title,
       where_purchased: document.getElementById('where-purchased').value,
-      rating:          currentRating + ' stars — ' + labels[currentRating],
+      how_heard:       document.getElementById('how-heard').value,
+      rating:          currentRating + ' stars — ' + starLabels[currentRating],
       review_headline: headline,
       review_body:     body,
       reader_type:     readerType,
       first_name:      document.getElementById('fname').value.trim(),
       email:           document.getElementById('email').value.trim(),
-      consent:         document.getElementById('consent').checked ? 'Yes' : 'No'
+      public_consent:  consent.value,
+      age_confirmed:   'Yes'
     };
 
+    /* ── Send to Google Apps Script ── */
     fetch('https://script.google.com/macros/s/AKfycbxJE4TdkqeTrRwLxh6x54tQ6pMKXo-v2FJVg_PVuHeRArxG1TGkKFPcw6A26c6bWvT4/exec', {
       method:  'POST',
       headers: {},
@@ -471,18 +617,18 @@ document.querySelectorAll('input[name="star_select"]').forEach(function(radio) {
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.ok || data.next || data.result === 'success') {
-        document.getElementById('review-form').style.display = 'none';
+        document.getElementById('review-form').style.display  = 'none';
         document.getElementById('success-screen').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         alert('Something went wrong. Please try again or email ogrlbdesigns@gmail.com');
-        btn.disabled = false;
+        btn.disabled    = false;
         btn.textContent = 'Submit My Review ✦';
       }
     })
     .catch(function() {
       alert('Could not send — please check your connection and try again.');
-      btn.disabled = false;
+      btn.disabled    = false;
       btn.textContent = 'Submit My Review ✦';
     });
   });
