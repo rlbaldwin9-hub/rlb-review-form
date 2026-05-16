@@ -113,20 +113,47 @@
     .hint { font-size: 11px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
     /* ── Stars ── */
-    .stars-row { display: flex; align-items: center; gap: 4px; padding: 4px 0; }
+ /* ── CSS-only star rating ── */
+.stars-css {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 0;
+  width: fit-content;
+}
 
-    .star {
-      font-size: 32px; cursor: pointer; color: #ddd;
-      transition: color 0.12s, transform 0.1s; user-select: none; line-height: 1;
-    }
+.stars-css input[type="radio"] { display: none; }
 
-    .star.lit { color: var(--gold); }
-    .star:hover { transform: scale(1.18); }
+.stars-css label {
+  font-size: 32px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.12s, transform 0.1s;
+  line-height: 1;
+}
 
-    .star-label {
-      font-size: 13px; color: var(--muted);
-      margin-left: 10px; font-style: italic; min-width: 90px;
-    }
+/* Hover — light up this star and all stars after it (which are visually before it) */
+.stars-css label:hover,
+.stars-css label:hover ~ label {
+  color: var(--gold);
+  transform: scale(1.12);
+}
+
+/* Selected — keep lit after click */
+.stars-css input:checked ~ label {
+  color: var(--gold);
+}
+
+.star-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-left: 10px;
+  font-style: italic;
+  min-width: 90px;
+  /* Pull it out of the reverse flow */
+  order: 99;
+}
 
     /* ── Reader type chips ── */
     .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0; }
@@ -278,15 +305,15 @@
 
       <div class="field">
         <label class="field-label">Overall Rating <span class="req">*</span></label>
-        <div class="stars-row">
-          <span class="star" data-val="1" role="button" aria-label="1 star" tabindex="0">★</span>
-          <span class="star" data-val="2" role="button" aria-label="2 stars" tabindex="0">★</span>
-          <span class="star" data-val="3" role="button" aria-label="3 stars" tabindex="0">★</span>
-          <span class="star" data-val="4" role="button" aria-label="4 stars" tabindex="0">★</span>
-          <span class="star" data-val="5" role="button" aria-label="5 stars" tabindex="0">★</span>
-          <span class="star-label" id="star-text">Tap to rate</span>
-        </div>
-        <input type="hidden" id="rating-val" name="rating" value="" />
+       <div class="stars-css">
+  <input type="radio" name="star_select" id="s5" value="5"><label for="s5" title="Outstanding!">★</label>
+  <input type="radio" name="star_select" id="s4" value="4"><label for="s4" title="Great">★</label>
+  <input type="radio" name="star_select" id="s3" value="3"><label for="s3" title="Good">★</label>
+  <input type="radio" name="star_select" id="s2" value="2"><label for="s2" title="Fair">★</label>
+  <input type="radio" name="star_select" id="s1" value="1"><label for="s1" title="Poor">★</label>
+  <span class="star-label" id="star-text">Tap to rate</span>
+</div>
+<input type="hidden" id="rating-val" name="rating" value="" />
       </div>
     </div>
 
@@ -367,26 +394,17 @@
 </div><!-- /page-wrap -->
 
 <script>
-  /* ── Star rating ── */
-  const stars      = document.querySelectorAll('.star');
-  const starText   = document.getElementById('star-text');
-  const ratingInput = document.getElementById('rating-val');
-  const labels     = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
-  let currentRating = 0;
+ /* ── CSS star rating — capture value on change ── */
+var starLabels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
+var currentRating = 0;
 
-  function paintStars(n) {
-    stars.forEach(function(s) { s.classList.toggle('lit', +s.dataset.val <= n); });
-  }
-
-  stars.forEach(function(s) {
-    s.addEventListener('mouseover', function() { paintStars(+s.dataset.val); starText.textContent = labels[+s.dataset.val]; });
-    s.addEventListener('mouseout',  function() { paintStars(currentRating); starText.textContent = currentRating ? labels[currentRating] : 'Tap to rate'; });
-    s.addEventListener('click', function() {
-      currentRating = +s.dataset.val;
-      ratingInput.value = currentRating;
-      paintStars(currentRating);
-      starText.textContent = labels[currentRating];
-    });
+document.querySelectorAll('input[name="star_select"]').forEach(function(radio) {
+  radio.addEventListener('change', function() {
+    currentRating = parseInt(this.value);
+    document.getElementById('rating-val').value = currentRating;
+    document.getElementById('star-text').textContent = starLabels[currentRating];
+  });
+});
     s.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { s.click(); } });
   });
 
