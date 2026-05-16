@@ -30,256 +30,155 @@
       padding: 2.5rem 1rem 4rem;
     }
 
-    .page-wrap {
-      max-width: 660px;
-      margin: 0 auto;
-    }
+    .page-wrap { max-width: 660px; margin: 0 auto; }
 
     /* ── Header ── */
-    .header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
+    .header { text-align: center; margin-bottom: 2.5rem; }
 
     .logo-mark {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+      width: 60px; height: 60px; border-radius: 50%;
       background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dk) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      color: var(--cream);
-      font-weight: 600;
-      margin: 0 auto 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 24px;
+      color: var(--cream); font-weight: 600; margin: 0 auto 1.25rem;
     }
 
     .header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--sage-dk);
-      margin-bottom: 0.4rem;
+      font-family: 'Playfair Display', serif; font-size: 28px;
+      font-weight: 600; color: var(--sage-dk); margin-bottom: 0.4rem;
     }
 
-    .header p {
-      font-size: 13px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      font-weight: 300;
-    }
+    .header p { font-size: 13px; color: var(--muted); letter-spacing: 0.08em; font-weight: 300; }
 
     .header-divider {
-      width: 60px;
-      height: 2px;
+      width: 60px; height: 2px;
       background: linear-gradient(90deg, var(--gold), var(--sage));
-      margin: 1.2rem auto 0;
-      border-radius: 2px;
+      margin: 1.2rem auto 0; border-radius: 2px;
     }
 
     /* ── Card ── */
     .card {
-      background: #fff;
-      border-radius: 14px;
+      background: #fff; border-radius: 14px;
       border: 1px solid var(--border);
-      padding: 2rem 2.25rem;
-      margin-bottom: 1.25rem;
+      padding: 2rem 2.25rem; margin-bottom: 1.25rem;
     }
 
     .card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--sage-dk);
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-family: 'Playfair Display', serif; font-size: 16px;
+      font-weight: 500; color: var(--sage-dk); margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 8px;
     }
 
-    .card-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
+    .card-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
     /* ── Fields ── */
     .field { margin-bottom: 1.25rem; }
     .field:last-child { margin-bottom: 0; }
 
     label.field-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sage);
-      margin-bottom: 0.4rem;
+      display: block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 0.4rem;
     }
 
     .req { color: var(--gold); margin-left: 2px; }
 
-    input[type="text"],
-    input[type="email"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      color: var(--text);
-      background: #fff;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      appearance: none;
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1px solid var(--border); border-radius: 7px;
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--text); background: #fff; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; appearance: none;
     }
 
     input:focus, select:focus, textarea:focus {
-      border-color: var(--sage);
-      box-shadow: 0 0 0 3px #7a9e7e22;
+      border-color: var(--sage); box-shadow: 0 0 0 3px #7a9e7e22;
     }
 
     select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a9e7e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 38px;
-      cursor: pointer;
+      background-repeat: no-repeat; background-position: right 14px center;
+      padding-right: 38px; cursor: pointer;
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-      line-height: 1.65;
-    }
+    textarea { resize: vertical; min-height: 120px; line-height: 1.65; }
 
-    .row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     @media (max-width: 500px) {
       .row-2 { grid-template-columns: 1fr; }
       .card { padding: 1.5rem 1.25rem; }
     }
 
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 5px;
-      font-style: italic;
-    }
+    .hint { font-size: 11px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
     /* ── Stars ── */
-    .stars-row {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 0;
-    }
+    .stars-row { display: flex; align-items: center; gap: 4px; padding: 4px 0; }
 
     .star {
-      font-size: 32px;
-      cursor: pointer;
-      color: #ddd;
-      transition: color 0.12s, transform 0.1s;
-      user-select: none;
-      line-height: 1;
+      font-size: 32px; cursor: pointer; color: #ddd;
+      transition: color 0.12s, transform 0.1s; user-select: none; line-height: 1;
     }
 
     .star.lit { color: var(--gold); }
     .star:hover { transform: scale(1.18); }
 
     .star-label {
-      font-size: 13px;
-      color: var(--muted);
-      margin-left: 10px;
-      font-style: italic;
-      min-width: 90px;
+      font-size: 13px; color: var(--muted);
+      margin-left: 10px; font-style: italic; min-width: 90px;
     }
 
     /* ── Reader type chips ── */
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 4px 0;
-    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0; }
 
     .chip input { display: none; }
 
     .chip label {
-      display: inline-block;
-      padding: 7px 16px;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      font-size: 13px;
-      cursor: pointer;
-      color: var(--muted);
-      background: transparent;
-      transition: all 0.15s;
+      display: inline-block; padding: 7px 16px;
+      border: 1px solid var(--border); border-radius: 24px;
+      font-size: 13px; cursor: pointer; color: var(--muted);
+      background: transparent; transition: all 0.15s;
     }
 
     .chip input:checked + label {
-      background: var(--sage);
-      color: var(--cream);
-      border-color: var(--sage);
-      font-weight: 700;
+      background: var(--sage); color: var(--cream);
+      border-color: var(--sage); font-weight: 700;
     }
 
-    .chip label:hover {
-      border-color: var(--sage);
-      color: var(--sage-dk);
+    .chip label:hover { border-color: var(--sage); color: var(--sage-dk); }
+
+    /* ── Other reader input ── */
+    #other-reader-wrap {
+      display: none;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    #other-reader-text {
+      max-width: 320px;
     }
 
     /* ── Consent ── */
     .consent-box {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: var(--sage-lt);
-      border: 1px solid #7a9e7e44;
-      border-radius: 8px;
-      padding: 12px 14px;
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--sage-lt); border: 1px solid #7a9e7e44;
+      border-radius: 8px; padding: 12px 14px;
     }
 
     .consent-box input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: var(--sage);
-      cursor: pointer;
-      flex-shrink: 0;
-      margin-top: 2px;
+      width: 16px; height: 16px; accent-color: var(--sage);
+      cursor: pointer; flex-shrink: 0; margin-top: 2px;
     }
 
-    .consent-box span {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
+    .consent-box span { font-size: 12px; color: var(--muted); line-height: 1.55; }
 
     /* ── Submit button ── */
     .btn-submit {
-      width: 100%;
-      padding: 14px;
-      background: var(--sage-dk);
-      color: var(--cream);
-      border: none;
-      border-radius: 8px;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      margin-top: 1.5rem;
+      width: 100%; padding: 14px; background: var(--sage-dk);
+      color: var(--cream); border: none; border-radius: 8px;
+      font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s, transform 0.1s; margin-top: 1.5rem;
     }
 
     .btn-submit:hover { background: #4d7450; }
@@ -288,57 +187,27 @@
 
     /* ── Success screen ── */
     .success {
-      display: none;
-      text-align: center;
-      padding: 3rem 1rem;
-      background: #fff;
-      border-radius: 14px;
-      border: 1px solid var(--border);
+      display: none; text-align: center; padding: 3rem 1rem;
+      background: #fff; border-radius: 14px; border: 1px solid var(--border);
     }
 
-    .success-icon {
-      font-size: 52px;
-      color: var(--gold);
-      display: block;
-      margin-bottom: 1rem;
-    }
+    .success-icon { font-size: 52px; color: var(--gold); display: block; margin-bottom: 1rem; }
 
     .success h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      color: var(--sage-dk);
-      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif; font-size: 24px;
+      color: var(--sage-dk); margin-bottom: 0.5rem;
     }
 
-    .success p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
+    .success p { color: var(--muted); font-size: 14px; line-height: 1.6; }
 
     .success a {
-      display: inline-block;
-      margin-top: 1.5rem;
-      color: var(--sage-dk);
-      font-size: 13px;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      display: inline-block; margin-top: 1.5rem; color: var(--sage-dk);
+      font-size: 13px; text-decoration: underline; text-underline-offset: 3px;
     }
 
     /* ── Footer ── */
-    .footer {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-
-    .footer a {
-      color: var(--sage-dk);
-      text-decoration: none;
-    }
-
+    .footer { text-align: center; margin-top: 2rem; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+    .footer a { color: var(--sage-dk); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
   </style>
 </head>
@@ -438,17 +307,22 @@
 
       <div class="field">
         <label class="field-label">I am reading as…</label>
+
+        <!-- Chips row -->
         <div class="chips">
           <div class="chip"><input type="radio" name="reader_type" id="r1" value="A Parent"><label for="r1">A Parent</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r2" value="A Grandparent"><label for="r2">A Grandparent</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r3" value="An Educator"><label for="r3">An Educator</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r4" value="An Adult Reader"><label for="r4">An Adult Reader</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r5" value="A Young Reader"><label for="r5">A Young Reader</label></div>
-<div class="chip"><input type="radio" name="reader_type" id="r6" value="Other"><label for="r6">Other…</label></div>
-<div id="other-reader-wrap" style="display:none; margin-top:10px;">
-  <input type="text" id="other-reader-text" placeholder="Tell us a little about yourself…" style="max-width:320px;" />
-</div>
+          <div class="chip"><input type="radio" name="reader_type" id="r6" value="Other"><label for="r6">Other…</label></div>
         </div>
+
+        <!-- Other text field — hidden until Other is selected -->
+        <div id="other-reader-wrap">
+          <input type="text" id="other-reader-text" placeholder="Tell us a little about yourself…" />
+        </div>
+
       </div>
     </div>
 
@@ -494,67 +368,81 @@
 
 <script>
   /* ── Star rating ── */
-  const stars = document.querySelectorAll('.star');
-  const starText = document.getElementById('star-text');
+  const stars      = document.querySelectorAll('.star');
+  const starText   = document.getElementById('star-text');
   const ratingInput = document.getElementById('rating-val');
-  const labels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
+  const labels     = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
   let currentRating = 0;
 
   function paintStars(n) {
-    stars.forEach(s => s.classList.toggle('lit', +s.dataset.val <= n));
+    stars.forEach(function(s) { s.classList.toggle('lit', +s.dataset.val <= n); });
   }
 
-  stars.forEach(s => {
-    s.addEventListener('mouseover', () => { paintStars(+s.dataset.val); starText.textContent = labels[+s.dataset.val]; });
-    s.addEventListener('mouseout',  () => { paintStars(currentRating); starText.textContent = currentRating ? labels[currentRating] : 'Tap to rate'; });
-    s.addEventListener('click', () => {
+  stars.forEach(function(s) {
+    s.addEventListener('mouseover', function() { paintStars(+s.dataset.val); starText.textContent = labels[+s.dataset.val]; });
+    s.addEventListener('mouseout',  function() { paintStars(currentRating); starText.textContent = currentRating ? labels[currentRating] : 'Tap to rate'; });
+    s.addEventListener('click', function() {
       currentRating = +s.dataset.val;
       ratingInput.value = currentRating;
       paintStars(currentRating);
       starText.textContent = labels[currentRating];
     });
-    s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') s.click(); });
+    s.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { s.click(); } });
   });
-// Show/hide "Other" text field
-  document.querySelectorAll('input[name="reader_type"]').forEach(radio => {
+
+  /* ── Show / hide Other text field ── */
+  document.querySelectorAll('input[name="reader_type"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
-      const wrap = document.getElementById('other-reader-wrap');
-      wrap.style.display = this.value === 'Other' ? 'block' : 'none';
-      if (this.value !== 'Other') document.getElementById('other-reader-text').value = '';
+      var wrap = document.getElementById('other-reader-wrap');
+      if (this.value === 'Other') {
+        wrap.style.display = 'block';
+      } else {
+        wrap.style.display = 'none';
+        document.getElementById('other-reader-text').value = '';
+      }
+    });
   });
+
   /* ── Form submit ── */
   document.getElementById('review-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const category = document.getElementById('book-category').value;
-    const title    = document.getElementById('book-title').value.trim();
-    const headline = document.getElementById('review-headline').value.trim();
-    const body     = document.getElementById('review-body').value.trim();
+    var category = document.getElementById('book-category').value;
+    var title    = document.getElementById('book-title').value.trim();
+    var headline = document.getElementById('review-headline').value.trim();
+    var body     = document.getElementById('review-body').value.trim();
 
-    if (!category)          { alert('Please select a book category.'); return; }
-    if (!title)             { alert('Please enter the book title.'); return; }
-    if (!currentRating)     { alert('Please select a star rating.'); return; }
-    if (!headline)          { alert('Please add a review headline.'); return; }
-    if (body.length < 20)   { alert('Please write at least a sentence in your review.'); return; }
+    if (!category)        { alert('Please select a book category.'); return; }
+    if (!title)           { alert('Please enter the book title.'); return; }
+    if (!currentRating)   { alert('Please select a star rating.'); return; }
+    if (!headline)        { alert('Please add a review headline.'); return; }
+    if (body.length < 20) { alert('Please write at least a sentence in your review.'); return; }
 
-    /* ── Send to Formspree (replace YOUR_FORM_ID below) ── */
-    const btn = document.getElementById('submit-btn');
+    var btn = document.getElementById('submit-btn');
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    const formData = {
-      book_category:  category,
-      book_title:     title,
+    var checkedReader = document.querySelector('input[name="reader_type"]:checked');
+    var readerValue   = checkedReader ? checkedReader.value : '';
+    var readerType;
+    if (readerValue === 'Other') {
+      var otherText = document.getElementById('other-reader-text').value.trim();
+      readerType = 'Other: ' + (otherText || 'Not specified');
+    } else {
+      readerType = readerValue || 'Not specified';
+    }
+
+    var formData = {
+      book_category:   category,
+      book_title:      title,
       where_purchased: document.getElementById('where-purchased').value,
-      rating:         currentRating + ' stars — ' + labels[currentRating],
+      rating:          currentRating + ' stars — ' + labels[currentRating],
       review_headline: headline,
-      review_body:    body,
-reader_type:    (document.querySelector('input[name="reader_type"]:checked')?.value === 'Other'
-                  ? 'Other: ' + (document.getElementById('other-reader-text').value.trim() || 'Not specified')
-                  : document.querySelector('input[name="reader_type"]:checked')?.value) || 'Not specified',
-      first_name:     document.getElementById('fname').value.trim(),
-      email:          document.getElementById('email').value.trim(),
-      consent:        document.getElementById('consent').checked ? 'Yes' : 'No'
+      review_body:     body,
+      reader_type:     readerType,
+      first_name:      document.getElementById('fname').value.trim(),
+      email:           document.getElementById('email').value.trim(),
+      consent:         document.getElementById('consent').checked ? 'Yes' : 'No'
     };
 
     fetch('https://script.google.com/macros/s/AKfycbxJE4TdkqeTrRwLxh6x54tQ6pMKXo-v2FJVg_PVuHeRArxG1TGkKFPcw6A26c6bWvT4/exec', {
@@ -562,8 +450,8 @@ reader_type:    (document.querySelector('input[name="reader_type"]:checked')?.va
       headers: {},
       body:    JSON.stringify(formData)
     })
-    .then(r => r.json())
-    .then(data => {
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
       if (data.ok || data.next || data.result === 'success') {
         document.getElementById('review-form').style.display = 'none';
         document.getElementById('success-screen').style.display = 'block';
@@ -574,7 +462,7 @@ reader_type:    (document.querySelector('input[name="reader_type"]:checked')?.va
         btn.textContent = 'Submit My Review ✦';
       }
     })
-    .catch(() => {
+    .catch(function() {
       alert('Could not send — please check your connection and try again.');
       btn.disabled = false;
       btn.textContent = 'Submit My Review ✦';
