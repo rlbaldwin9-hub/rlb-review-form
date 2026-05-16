@@ -552,7 +552,7 @@
     })
     .then(r => r.json())
     .then(data => {
-      if (data.ok || data.next) {
+      if (data.ok || data.next || data.result === 'success') {
         document.getElementById('review-form').style.display = 'none';
         document.getElementById('success-screen').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
