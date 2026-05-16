@@ -444,6 +444,10 @@
           <div class="chip"><input type="radio" name="reader_type" id="r3" value="An Educator"><label for="r3">An Educator</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r4" value="An Adult Reader"><label for="r4">An Adult Reader</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r5" value="A Young Reader"><label for="r5">A Young Reader</label></div>
+<div class="chip"><input type="radio" name="reader_type" id="r6" value="Other"><label for="r6">Other…</label></div>
+<div id="other-reader-wrap" style="display:none; margin-top:10px;">
+  <input type="text" id="other-reader-text" placeholder="Tell us a little about yourself…" style="max-width:320px;" />
+</div>/div>
         </div>
       </div>
     </div>
@@ -511,7 +515,14 @@
     });
     s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') s.click(); });
   });
-
+// Show/hide "Other" text field
+  document.querySelectorAll('input[name="reader_type"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const wrap = document.getElementById('other-reader-wrap');
+      wrap.style.display = this.value === 'Other' ? 'block' : 'none';
+      if (this.value !== 'Other') document.getElementById('other-reader-text').value = '';
+    });
+  });
   /* ── Form submit ── */
   document.getElementById('review-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -539,7 +550,9 @@
       rating:         currentRating + ' stars — ' + labels[currentRating],
       review_headline: headline,
       review_body:    body,
-      reader_type:    document.querySelector('input[name="reader_type"]:checked')?.value || 'Not specified',
+reader_type:    (document.querySelector('input[name="reader_type"]:checked')?.value === 'Other'
+                  ? 'Other: ' + (document.getElementById('other-reader-text').value.trim() || 'Not specified')
+                  : document.querySelector('input[name="reader_type"]:checked')?.value) || 'Not specified',
       first_name:     document.getElementById('fname').value.trim(),
       email:          document.getElementById('email').value.trim(),
       consent:        document.getElementById('consent').checked ? 'Yes' : 'No'
