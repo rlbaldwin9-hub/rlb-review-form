@@ -16,7 +16,6 @@
       --gold:   #c8a96e;
       --gold-lt:#f5eddb;
       --cream:  #f5f0e8;
-      --blush:  #f2e4e1;
       --text:   #2c2c2a;
       --muted:  #6b6b68;
       --border: #c8a96e55;
@@ -32,8 +31,9 @@
       padding: 2.5rem 1rem 4rem;
     }
 
-    .page-wrap { max-width: 660px; margin: 0 auto; }
+    .page-wrap { max-width: 680px; margin: 0 auto; }
 
+    /* ── Header ── */
     .header { text-align: center; margin-bottom: 2.5rem; }
 
     .logo-mark {
@@ -57,6 +57,7 @@
       margin: 1.2rem auto 0; border-radius: 2px;
     }
 
+    /* ── Card ── */
     .card {
       background: #fff; border-radius: 14px;
       border: 1px solid var(--border);
@@ -71,6 +72,7 @@
 
     .card-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
+    /* ── Fields ── */
     .field { margin-bottom: 1.25rem; }
     .field:last-child { margin-bottom: 0; }
 
@@ -107,12 +109,60 @@
 
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-    @media (max-width: 500px) {
+    @media (max-width: 520px) {
       .row-2 { grid-template-columns: 1fr; }
       .card { padding: 1.5rem 1.25rem; }
+      .review-type-grid { grid-template-columns: 1fr 1fr !important; }
     }
 
     .hint { font-size: 11px; color: var(--muted); margin-top: 5px; font-style: italic; }
+
+    /* ── Review type selector tiles ── */
+    .review-type-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 0;
+    }
+
+    .type-tile input[type="radio"] { display: none; }
+
+    .type-tile label {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 6px; padding: 14px 8px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      cursor: pointer; text-align: center;
+      transition: all 0.15s; background: #fff;
+      min-height: 90px;
+    }
+
+    .type-tile label .tile-icon { font-size: 24px; line-height: 1; }
+    .type-tile label .tile-name { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; line-height: 1.3; }
+
+    .type-tile label:hover {
+      border-color: var(--sage); background: var(--sage-lt);
+    }
+
+    .type-tile input[type="radio"]:checked + label {
+      border-color: var(--sage-dk); background: var(--sage-lt);
+      box-shadow: 0 0 0 3px #7a9e7e22;
+    }
+
+    .type-tile input[type="radio"]:checked + label .tile-name {
+      color: var(--sage-dk);
+    }
+
+    /* ── Dynamic sections (shown/hidden by JS) ── */
+    .dynamic-section { display: none; margin-top: 1.25rem; }
+    .dynamic-section.visible { display: block; }
+
+    /* ── App card list in dropdown ── */
+    .app-description {
+      font-size: 11px; color: var(--muted);
+      margin-top: 4px; font-style: italic; line-height: 1.4;
+      padding: 0 2px;
+    }
 
     /* ── CSS-only stars ── */
     .stars-css {
@@ -176,8 +226,6 @@
       padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border);
       cursor: pointer; transition: border-color 0.15s, background 0.15s;
     }
-
-    .consent-option:hover { border-color: var(--sage); }
 
     .consent-option input[type="radio"] {
       width: 16px; height: 16px; accent-color: var(--sage);
@@ -243,6 +291,15 @@
     .footer { text-align: center; margin-top: 2rem; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
     .footer a { color: var(--sage-dk); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
+
+    /* ── Optional badge ── */
+    .optional-badge {
+      display: inline-block;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted);
+      background: #f0ebe0; border-radius: 10px;
+      padding: 2px 8px; margin-left: 8px; vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -258,53 +315,154 @@
 
   <form id="review-form" novalidate>
 
-    <!-- ABOUT THE BOOK -->
+    <!-- ══════════════════════════════════════
+         STEP 1 — WHAT ARE YOU REVIEWING?
+    ══════════════════════════════════════ -->
     <div class="card">
-      <div class="card-title">About the Book</div>
+      <div class="card-title">What Are You Reviewing? <span class="req">*</span></div>
 
-      <div class="field">
-        <label class="field-label" for="book-category">Book Category <span class="req">*</span></label>
-        <select id="book-category" name="book_category" required>
-          <option value="">Select a category…</option>
-          <optgroup label="Children's Books">
-            <option>Children's Book — Ages 0–4</option>
-            <option>Children's Book — Ages 5–9</option>
-            <option>Children's Book — Ages 9–13</option>
-          </optgroup>
-          <optgroup label="Cookbooks">
-            <option>Cookbook / Recipe Collection</option>
-          </optgroup>
-          <optgroup label="Coloring Books">
-            <option>Adult Coloring Book</option>
-            <option>Children's Coloring Book</option>
-            <option>Zentangle / Mandala Book</option>
-          </optgroup>
-          <optgroup label="Other">
-            <option>Writing Journal / Activity Book</option>
+      <div class="review-type-grid">
+        <div class="type-tile">
+          <input type="radio" name="review_type" id="type-book" value="Book">
+          <label for="type-book">
+            <span class="tile-icon">📚</span>
+            <span class="tile-name">A Book</span>
+          </label>
+        </div>
+        <div class="type-tile">
+          <input type="radio" name="review_type" id="type-app" value="Creator App">
+          <label for="type-app">
+            <span class="tile-icon">📱</span>
+            <span class="tile-name">A Creator App</span>
+          </label>
+        </div>
+        <div class="type-tile">
+          <input type="radio" name="review_type" id="type-tutorial" value="Tutorial">
+          <label for="type-tutorial">
+            <span class="tile-icon">🎓</span>
+            <span class="tile-name">A Tutorial</span>
+          </label>
+        </div>
+        <div class="type-tile">
+          <input type="radio" name="review_type" id="type-website" value="Website / Blog">
+          <label for="type-website">
+            <span class="tile-icon">🌐</span>
+            <span class="tile-name">Website / Blog</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ── BOOK fields ── -->
+      <div class="dynamic-section" id="section-book">
+        <div class="field">
+          <label class="field-label" for="book-category">Book Category <span class="req">*</span></label>
+          <select id="book-category" name="book_category">
+            <option value="">Select a category…</option>
+            <optgroup label="Children's Books">
+              <option>Children's Book — Ages 0–4</option>
+              <option>Children's Book — Ages 5–9</option>
+              <option>Children's Book — Ages 9–13</option>
+            </optgroup>
+            <optgroup label="Cookbooks">
+              <option>Cookbook / Recipe Collection</option>
+            </optgroup>
+            <optgroup label="Coloring Books">
+              <option>Adult Coloring Book</option>
+              <option>Children's Coloring Book</option>
+              <option>Zentangle / Mandala Book</option>
+            </optgroup>
+            <optgroup label="Other">
+              <option>Writing Journal / Activity Book</option>
+              <option>Other</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="book-title">Book Title <span class="req">*</span></label>
+          <input type="text" id="book-title" name="book_title" placeholder="e.g. The Enchanted Storyteller's Studio" />
+        </div>
+        <div class="field">
+          <label class="field-label" for="where-purchased">Where Did You Purchase?</label>
+          <select id="where-purchased" name="where_purchased">
+            <option value="">Select…</option>
+            <option>Amazon</option>
+            <option>RLBDesigns.com</option>
+            <option>Barnes &amp; Noble</option>
+            <option>Gift from someone else</option>
             <option>Other</option>
-          </optgroup>
-        </select>
+          </select>
+        </div>
       </div>
 
-      <div class="field">
-        <label class="field-label" for="book-title">Book Title <span class="req">*</span></label>
-        <input type="text" id="book-title" name="book_title" placeholder="e.g. The Enchanted Storyteller's Studio" required />
+      <!-- ── CREATOR APP fields ── -->
+      <div class="dynamic-section" id="section-app">
+        <div class="field">
+          <label class="field-label" for="app-name">Which App? <span class="req">*</span></label>
+          <select id="app-name" name="app_name">
+            <option value="">Select an app…</option>
+            <option value="Alpha-Gal Safe Recipe Finder">Alpha-Gal Safe Recipe Finder — Free recipe search app for Alpha-Gal Syndrome safe, mammal-free meals</option>
+            <option value="Story Forge">Story Forge — AI-assisted app for building and developing your children's storybook from concept to complete</option>
+            <option value="Reading Journal">Reading Journal — Track RLB books you've read, are reading, and want to read next; includes wish list and notes</option>
+            <option value="My Cookbook Builder">My Cookbook Builder — Build a complete cookbook from scratch; add recipes, name your book, and download the finished file</option>
+            <option value="Cookbook Creator Toolkit">Cookbook Creator Toolkit — Full concept planner for designing and organizing your cookbook from start to finish</option>
+            <option value="Coloring Book Studio Pro">Coloring Book Studio Pro — Cover-to-cover coloring book builder with bonus pages and AI image prompts for 300dpi KDP/IngramSpark-ready files</option>
+            <option value="Coloring Book Planner">Coloring Book Planner — Brainstorm themes, build your prompt strategy, and quality-check before you generate a single page</option>
+            <option value="Coloring Book Page Prompt Creator">Coloring Book Page Prompt Creator — Single-page prompt builder with creative ideas and starting points for every style</option>
+          </select>
+        </div>
+        <div id="app-desc-wrap" class="app-description"></div>
       </div>
 
-      <div class="field">
-        <label class="field-label" for="where-purchased">Where Did You Purchase?</label>
-        <select id="where-purchased" name="where_purchased">
-          <option value="">Select…</option>
-          <option>Amazon</option>
-          <option>RLBDesigns.com</option>
-          <option>Barnes &amp; Noble</option>
-          <option>Gift from someone else</option>
-          <option>Other</option>
-        </select>
+      <!-- ── TUTORIAL fields ── -->
+      <div class="dynamic-section" id="section-tutorial">
+        <div class="field">
+          <label class="field-label" for="tutorial-app">Tutorial Topic <span class="req">*</span></label>
+          <select id="tutorial-app" name="tutorial_topic">
+            <option value="">Select the app this tutorial covers…</option>
+            <option>Alpha-Gal Safe Recipe Finder</option>
+            <option>Story Forge</option>
+            <option>Reading Journal</option>
+            <option>My Cookbook Builder</option>
+            <option>Cookbook Creator Toolkit</option>
+            <option>Coloring Book Studio Pro</option>
+            <option>Coloring Book Planner</option>
+            <option>Coloring Book Page Prompt Creator</option>
+            <option>General / Getting Started</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="tutorial-name">Which Tutorial Specifically? <span class="req">*</span></label>
+          <input type="text" id="tutorial-name" name="tutorial_name" placeholder="e.g. How to export your cookbook as a PDF" />
+        </div>
       </div>
 
+      <!-- ── WEBSITE fields ── -->
+      <div class="dynamic-section" id="section-website">
+        <div class="field">
+          <label class="field-label" for="website-area">Which Part of the Site? <span class="req">*</span></label>
+          <select id="website-area" name="website_area">
+            <option value="">Select…</option>
+            <option>Homepage</option>
+            <option>Books / Shop</option>
+            <option>Creator Apps page</option>
+            <option>Blog / Tutorials</option>
+            <option>About page</option>
+            <option>Overall experience</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════
+         HOW DID YOU HEAR ABOUT US
+    ══════════════════════════════════════ -->
+    <div class="card" id="card-how-heard" style="display:none;">
+      <div class="card-title">How Did You Find Us?</div>
       <div class="field">
-        <label class="field-label" for="how-heard">How Did You Hear About This Book?</label>
+        <label class="field-label" for="how-heard">How Did You Hear About This?</label>
         <select id="how-heard" name="how_heard">
           <option value="">Select…</option>
           <option>Amazon search</option>
@@ -321,11 +479,13 @@
       </div>
     </div>
 
-    <!-- STAR RATING -->
-    <div class="card">
-      <div class="card-title">Your Rating</div>
+    <!-- ══════════════════════════════════════
+         STAR RATING
+    ══════════════════════════════════════ -->
+    <div class="card" id="card-stars" style="display:none;">
+      <div class="card-title" id="stars-card-title">Your Rating</div>
       <div class="field">
-        <label class="field-label">Overall Rating <span class="req">*</span></label>
+        <label class="field-label" id="stars-label">Overall Rating <span class="req" id="stars-req">*</span> <span class="optional-badge" id="stars-optional" style="display:none;">Optional</span></label>
         <div class="stars-css">
           <input type="radio" name="star_select" id="s5" value="5">
           <label for="s5" title="Outstanding!">★</label>
@@ -343,30 +503,34 @@
       </div>
     </div>
 
-    <!-- YOUR REVIEW -->
-    <div class="card">
+    <!-- ══════════════════════════════════════
+         YOUR REVIEW
+    ══════════════════════════════════════ -->
+    <div class="card" id="card-review" style="display:none;">
       <div class="card-title">Your Review</div>
 
       <div class="field">
         <label class="field-label" for="review-headline">Review Headline <span class="req">*</span></label>
-        <input type="text" id="review-headline" name="review_headline" placeholder="Sum it up in a few words…" required />
+        <input type="text" id="review-headline" name="review_headline" placeholder="Sum it up in a few words…" />
       </div>
 
       <div class="field">
         <label class="field-label" for="review-body">Written Review <span class="req">*</span></label>
-        <textarea id="review-body" name="review_body" placeholder="What did you love? Who would you recommend this to? What made it special?" required></textarea>
-        <p class="hint">Minimum 20 characters. Your words help other readers find their next favorite book!</p>
+        <textarea id="review-body" name="review_body" placeholder="What did you love? Who would you recommend this to? What made it special?"></textarea>
+        <p class="hint">Minimum 20 characters. Your words help other readers and users find what they need!</p>
       </div>
 
       <div class="field">
-        <label class="field-label">I am reading as…</label>
+        <label class="field-label">I am… <span style="font-weight:300;font-style:italic;text-transform:none;letter-spacing:0;">(optional)</span></label>
         <div class="chips">
           <div class="chip"><input type="radio" name="reader_type" id="r1" value="A Parent"><label for="r1">A Parent</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r2" value="A Grandparent"><label for="r2">A Grandparent</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r3" value="An Educator"><label for="r3">An Educator</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r4" value="An Adult Reader"><label for="r4">An Adult Reader</label></div>
           <div class="chip"><input type="radio" name="reader_type" id="r5" value="A Young Reader"><label for="r5">A Young Reader</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r6" value="Other"><label for="r6">Other…</label></div>
+          <div class="chip"><input type="radio" name="reader_type" id="r6" value="An App User"><label for="r6">An App User</label></div>
+          <div class="chip"><input type="radio" name="reader_type" id="r7" value="A Publisher / Author"><label for="r7">A Publisher / Author</label></div>
+          <div class="chip"><input type="radio" name="reader_type" id="r8" value="Other"><label for="r8">Other…</label></div>
         </div>
         <div id="other-reader-wrap">
           <input type="text" id="other-reader-text" placeholder="Tell us a little about yourself…" />
@@ -374,8 +538,10 @@
       </div>
     </div>
 
-    <!-- ABOUT YOU -->
-    <div class="card">
+    <!-- ══════════════════════════════════════
+         ABOUT YOU
+    ══════════════════════════════════════ -->
+    <div class="card" id="card-about" style="display:none;">
       <div class="card-title">About You <span style="font-family:'Lato',sans-serif;font-size:12px;font-weight:300;font-style:italic;color:var(--muted);">optional</span></div>
       <div class="row-2">
         <div class="field">
@@ -390,18 +556,20 @@
       </div>
     </div>
 
-    <!-- PERMISSIONS -->
-    <div class="card">
+    <!-- ══════════════════════════════════════
+         PERMISSIONS & LEGAL
+    ══════════════════════════════════════ -->
+    <div class="card" id="card-consent" style="display:none;">
       <div class="card-title">Permissions &amp; Confirmation</div>
 
       <div class="disclaimer-box">
         <p>
           <strong>Before you submit, please read:</strong> By submitting this review you confirm it reflects
-          your own honest, first-hand experience with this book. Reviews may be lightly edited for
-          spelling or length but will <strong>never</strong> misrepresent your words or opinion.
-          Your email address, if provided, will never be published, sold, or shared with any
-          third party. RLB Designs reserves the right to decline publication of reviews that
-          contain offensive language, personal attacks, or content unrelated to the book.
+          your own honest, first-hand experience. Reviews may be lightly edited for spelling or length
+          but will <strong>never</strong> misrepresent your words or opinion. Your email address, if provided,
+          will never be published, sold, or shared with any third party. RLB Designs reserves the right
+          to decline publication of reviews containing offensive language, personal attacks, or content
+          unrelated to the product being reviewed.
         </p>
       </div>
 
@@ -436,7 +604,7 @@
       </div>
     </div>
 
-    <button type="submit" class="btn-submit" id="submit-btn">Submit My Review ✦</button>
+    <button type="submit" class="btn-submit" id="submit-btn" style="display:none;">Submit My Review ✦</button>
 
   </form>
 
@@ -457,10 +625,66 @@
 <script>
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJE4TdkqeTrRwLxh6x54tQ6pMKXo-v2FJVg_PVuHeRArxG1TGkKFPcw6A26c6bWvT4/exec';
 
-  /* -- Stars -- */
   var starLabels    = ['', 'Poor', 'Fair', 'Good', 'Great', 'Outstanding!'];
   var currentRating = 0;
+  var starsRequired = true;
 
+  /* -- App descriptions for display under dropdown -- */
+  var appDescriptions = {
+    'Alpha-Gal Safe Recipe Finder':       'Free recipe search for Alpha-Gal Syndrome — mammal-free, dairy-free, and clean eating meals.',
+    'Story Forge':                         'AI-powered app for building your children\'s storybook from first idea to finished draft.',
+    'Reading Journal':                     'Track every RLB book you\'ve read, are reading, or want to read — with notes and a wish list.',
+    'My Cookbook Builder':                 'Add your recipes, name your book, and download a fully formatted cookbook file.',
+    'Cookbook Creator Toolkit':            'Full concept planner for mapping out and organizing your cookbook from cover to cover.',
+    'Coloring Book Studio Pro':            'Build a complete print-ready coloring book — cover, interior pages, bonus pages, and 300dpi AI image prompts for KDP/IngramSpark.',
+    'Coloring Book Planner':               'Brainstorm themes, build your prompt strategy, and quality-check your concept before generating a single page.',
+    'Coloring Book Page Prompt Creator':   'Single-page prompt builder packed with creative ideas and starting points for every coloring style.'
+  };
+
+  /* -- Show/hide cards based on review type selection -- */
+  function handleTypeChange() {
+    var selected = document.querySelector('input[name="review_type"]:checked');
+    if (!selected) return;
+    var type = selected.value;
+
+    /* Hide all dynamic sections first */
+    document.querySelectorAll('.dynamic-section').forEach(function(s) { s.classList.remove('visible'); });
+
+    /* Show the right section */
+    if (type === 'Book')           { document.getElementById('section-book').classList.add('visible'); }
+    if (type === 'Creator App')    { document.getElementById('section-app').classList.add('visible'); }
+    if (type === 'Tutorial')       { document.getElementById('section-tutorial').classList.add('visible'); }
+    if (type === 'Website / Blog') { document.getElementById('section-website').classList.add('visible'); }
+
+    /* Stars: required for books, optional for everything else */
+    starsRequired = (type === 'Book');
+    document.getElementById('stars-req').style.display     = starsRequired ? 'inline' : 'none';
+    document.getElementById('stars-optional').style.display = starsRequired ? 'none'   : 'inline-block';
+
+    /* Show all subsequent cards */
+    var cards = ['card-how-heard', 'card-stars', 'card-review', 'card-about', 'card-consent'];
+    cards.forEach(function(id) { document.getElementById(id).style.display = 'block'; });
+    document.getElementById('submit-btn').style.display = 'block';
+
+    /* Scroll smoothly to next card */
+    setTimeout(function() {
+      document.getElementById('card-how-heard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  document.querySelectorAll('input[name="review_type"]').forEach(function(r) {
+    r.addEventListener('change', handleTypeChange);
+    r.addEventListener('click',  handleTypeChange);
+  });
+
+  /* -- App description preview -- */
+  document.getElementById('app-name').addEventListener('change', function() {
+    var wrap = document.getElementById('app-desc-wrap');
+    var desc = appDescriptions[this.value];
+    wrap.textContent = desc ? '💡 ' + desc : '';
+  });
+
+  /* -- Stars -- */
   document.querySelectorAll('input[name="star_select"]').forEach(function(r) {
     r.addEventListener('change', function() {
       currentRating = parseInt(this.value, 10);
@@ -494,20 +718,38 @@
   document.getElementById('review-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    var category = document.getElementById('book-category').value;
-    var title    = document.getElementById('book-title').value.trim();
+    var reviewType = document.querySelector('input[name="review_type"]:checked');
+    if (!reviewType) { alert('Please select what you are reviewing.'); return; }
+    var type = reviewType.value;
+
+    /* Type-specific validation */
+    if (type === 'Book') {
+      if (!document.getElementById('book-category').value) { alert('Please select a book category.'); return; }
+      if (!document.getElementById('book-title').value.trim()) { alert('Please enter the book title.'); return; }
+    }
+    if (type === 'Creator App') {
+      if (!document.getElementById('app-name').value) { alert('Please select which app you are reviewing.'); return; }
+    }
+    if (type === 'Tutorial') {
+      if (!document.getElementById('tutorial-app').value)  { alert('Please select the tutorial topic.'); return; }
+      if (!document.getElementById('tutorial-name').value.trim()) { alert('Please tell us which tutorial specifically.'); return; }
+    }
+    if (type === 'Website / Blog') {
+      if (!document.getElementById('website-area').value) { alert('Please select which part of the site you are reviewing.'); return; }
+    }
+
+    /* Stars required only for books */
+    if (starsRequired && !currentRating) { alert('Please select a star rating.'); return; }
+
     var headline = document.getElementById('review-headline').value.trim();
     var body     = document.getElementById('review-body').value.trim();
-    var consent  = document.querySelector('input[name="public_consent"]:checked');
-    var ageBox   = document.getElementById('age-confirm');
-
-    if (!category)        { alert('Please select a book category.'); return; }
-    if (!title)           { alert('Please enter the book title.'); return; }
-    if (!currentRating)   { alert('Please select a star rating.'); return; }
     if (!headline)        { alert('Please add a review headline.'); return; }
     if (body.length < 20) { alert('Please write at least a sentence in your review.'); return; }
-    if (!consent)         { alert('Please select Yes or No for the public sharing permission.'); return; }
-    if (!ageBox.checked)  { alert('Please confirm you are 18 or older, or a parent/guardian.'); return; }
+
+    var consent = document.querySelector('input[name="public_consent"]:checked');
+    var ageBox  = document.getElementById('age-confirm');
+    if (!consent)        { alert('Please select Yes or No for the public sharing permission.'); return; }
+    if (!ageBox.checked) { alert('Please confirm you are 18 or older, or a parent/guardian.'); return; }
 
     /* Reader type */
     var checkedReader = document.querySelector('input[name="reader_type"]:checked');
@@ -520,13 +762,18 @@
       readerType = readerValue ? readerValue : 'Not specified';
     }
 
-    /* All field values */
+    /* Build payload */
     var fields = {
-      book_category:   category,
-      book_title:      title,
+      review_type:     type,
+      book_category:   document.getElementById('book-category').value,
+      book_title:      document.getElementById('book-title').value.trim(),
       where_purchased: document.getElementById('where-purchased').value,
+      app_name:        document.getElementById('app-name').value,
+      tutorial_topic:  document.getElementById('tutorial-app').value,
+      tutorial_name:   document.getElementById('tutorial-name').value.trim(),
+      website_area:    document.getElementById('website-area').value,
       how_heard:       document.getElementById('how-heard').value,
-      rating:          currentRating + ' stars — ' + starLabels[currentRating],
+      rating:          currentRating ? currentRating + ' stars — ' + starLabels[currentRating] : 'Not rated',
       review_headline: headline,
       review_body:     body,
       reader_type:     readerType,
@@ -536,12 +783,11 @@
       age_confirmed:   'Yes'
     };
 
-    /* Disable button immediately */
     var btn = document.getElementById('submit-btn');
     btn.disabled    = true;
     btn.textContent = 'Sending…';
 
-    /* Build a hidden native form and POST it — bypasses sandbox fetch() block */
+    /* Native form POST — bypasses Google Sites sandbox */
     var nativeForm    = document.createElement('form');
     nativeForm.method = 'POST';
     nativeForm.action = SCRIPT_URL;
@@ -560,9 +806,9 @@
     nativeForm.submit();
     document.body.removeChild(nativeForm);
 
-    /* Show thank-you on this page right away */
-    document.getElementById('review-form').style.display   = 'none';
-    document.getElementById('success-screen').style.display = 'block';
+    /* Show thank-you immediately */
+    document.getElementById('review-form').style.display    = 'none';
+    document.getElementById('success-screen').style.display  = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
