@@ -1,193 +1,343 @@
 // ============================================================
-//  RLB Designs — Review Logger & Auto-Approver
-//  Paste this entire file into Google Apps Script
-//  (Extensions → Apps Script inside your Google Sheet)
+//  RLB Designs — Review Logger & Auto-Approver  v2.0
+//  Handles: Books, Creator Apps, Tutorials, Website/Blog
+//
+//  HOW TO INSTALL:
+//  1. Open your RLB Reader Reviews Google Sheet
+//  2. Click Extensions → Apps Script
+//  3. Delete all existing code
+//  4. Paste this entire file
+//  5. Click Save (Ctrl+S), name project "RLB Reviews"
+//  6. Click Deploy → Manage Deployments
+//  7. Edit your existing deployment → set to New Version → Deploy
+//  Your Web App URL stays exactly the same — nothing else to update
 // ============================================================
 
-// Column layout in your Sheet (DO NOT change order):
-// A: Timestamp | B: Status | C: Rating (number) | D: Rating Label
-// E: Book Category | F: Book Title | G: Where Purchased
-// H: Review Headline | I: Review Body | J: Reader Type
-// K: First Name | L: Email | M: Consent | N: Display Name
+var SHEET_NAME             = 'Reviews';
+var AUTO_APPROVE_THRESHOLD = 4;  // 4 and 5 stars auto-approve; 1-3 stay Pending
 
-const SHEET_NAME = "Reviews";
-const AUTO_APPROVE_THRESHOLD = 4; // 4 and 5 stars auto-approve
+// Column order — DO NOT change without also updating getRowData()
+var HEADERS = [
+  'Timestamp',        // A
+  'Status',           // B
+  'Review Type',      // C
+  'Rating (num)',     // D
+  'Rating Label',     // E
+  // ── Book fields ──
+  'Book Category',    // F
+  'Book Title',       // G
+  'Where Purchased',  // H
+  // ── App fields ──
+  'App Name',         // I
+  // ── Tutorial fields ──
+  'Tutorial Topic',   // J
+  'Tutorial Name',    // K
+  // ── Website fields ──
+  'Website Area',     // L
+  // ── Shared fields ──
+  'How Heard',        // M
+  'Review Headline',  // N
+  'Review Body',      // O
+  'Reader Type',      // P
+  'First Name',       // Q
+  'Email',            // R
+  'Public Consent',   // S
+  'Age Confirmed',    // T
+  'Display Name'      // U
+];
 
-// ------------------------------------------------------------
-//  doPost — receives the Formspree webhook POST
-// ------------------------------------------------------------
+// ============================================================
+//  doPost — receives form submission
+// ============================================================
 function doPost(e) {
   try {
-    const ss    = SpreadsheetApp.getActiveSpreadsheet();
-    let sheet   = ss.getSheetByName(SHEET_NAME);
+    var sheet = getOrCreateSheet();
+    var payload = parsePayload(e);
 
-    // Create sheet + headers if this is the first run
-    if (!sheet) {
-      sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow([
-        "Timestamp", "Status", "Rating (num)", "Rating Label",
-        "Book Category", "Book Title", "Where Purchased",
-        "Review Headline", "Review Body", "Reader Type",
-        "First Name", "Email", "Consent", "Display Name"
-      ]);
-      // Freeze header row & basic formatting
-      sheet.setFrozenRows(1);
-      sheet.getRange("1:1").setFontWeight("bold").setBackground("#3d5c40").setFontColor("#f5f0e8");
-      sheet.setColumnWidths(1, 14, 160);
-      sheet.getRange("I:I").setColumnWidth(320); // wider for review body
+    var ratingRaw  = payload.rating || '';
+    var ratingNum  = 0;
+    var ratingLabel = '';
+
+    // Parse "5 stars — Outstanding!" format
+    var ratingMatch = ratingRaw.match(/^(\d+)/);
+    if (ratingMatch) {
+      ratingNum = parseInt(ratingMatch[1], 10);
+    }
+    var dashIndex = ratingRaw.indexOf('—');
+    if (dashIndex !== -1) {
+      ratingLabel = ratingRaw.substring(dashIndex + 1).trim();
     }
 
-    // Parse the incoming JSON payload from Formspree
-    const payload = JSON.parse(e.postData.contents);
+    // Auto-approve logic:
+    // Books with 4-5 stars → Approved
+    // Books with 1-3 stars → Pending
+    // Apps/Tutorials/Website with any rating → Approved (feedback always welcome)
+    var reviewType = payload.review_type || 'Book';
+    var status;
+    if (reviewType === 'Book') {
+      status = (ratingNum >= AUTO_APPROVE_THRESHOLD) ? 'Approved' : 'Pending';
+    } else {
+      status = ratingNum > 0
+        ? (ratingNum >= AUTO_APPROVE_THRESHOLD ? 'Approved' : 'Pending')
+        : 'Approved';
+    }
 
-    const ratingRaw   = payload.rating || "";
-    const ratingNum   = parseInt(ratingRaw) || 0;
-    const ratingLabel = payload.rating ? ratingRaw.replace(/^\d+\s*-?\s*stars?\s*[-—]\s*/i, "").trim() : "";
-    const firstName   = (payload.first_name || "").trim();
-    const displayName = firstName ? firstName : "A Reader";
+    var firstName   = (payload.first_name || '').trim();
+    var displayName = firstName ? firstName : 'A Reader';
 
-    // Auto-approve logic
-    const status = ratingNum >= AUTO_APPROVE_THRESHOLD ? "Approved" : "Pending";
+    var row = [
+      new Date(),                          // A Timestamp
+      status,                              // B Status
+      reviewType,                          // C Review Type
+      ratingNum || '',                     // D Rating (num)
+      ratingLabel,                         // E Rating Label
+      payload.book_category   || '',       // F Book Category
+      payload.book_title      || '',       // G Book Title
+      payload.where_purchased || '',       // H Where Purchased
+      payload.app_name        || '',       // I App Name
+      payload.tutorial_topic  || '',       // J Tutorial Topic
+      payload.tutorial_name   || '',       // K Tutorial Name
+      payload.website_area    || '',       // L Website Area
+      payload.how_heard       || '',       // M How Heard
+      payload.review_headline || '',       // N Review Headline
+      payload.review_body     || '',       // O Review Body
+      payload.reader_type     || '',       // P Reader Type
+      firstName,                           // Q First Name
+      payload.email           || '',       // R Email
+      payload.public_consent  || '',       // S Public Consent
+      payload.age_confirmed   || '',       // T Age Confirmed
+      displayName                          // U Display Name
+    ];
 
-    const timestamp = new Date();
-
-    sheet.appendRow([
-      timestamp,
-      status,
-      ratingNum,
-      ratingLabel,
-      payload.book_category   || "",
-      payload.book_title      || "",
-      payload.where_purchased || "",
-      payload.review_headline || "",
-      payload.review_body     || "",
-      payload.reader_type     || "",
-      firstName,
-      payload.email           || "",
-      payload.consent         || "No",
-      displayName
-    ]);
+    sheet.appendRow(row);
 
     // Colour-code the Status cell
-    const lastRow   = sheet.getLastRow();
-    const statusCell = sheet.getRange(lastRow, 2);
-    if (status === "Approved") {
-      statusCell.setBackground("#d4edda").setFontColor("#155724");
+    var lastRow   = sheet.getLastRow();
+    var statusCell = sheet.getRange(lastRow, 2);
+    if (status === 'Approved') {
+      statusCell.setBackground('#d4edda').setFontColor('#155724');
     } else {
-      statusCell.setBackground("#fff3cd").setFontColor("#856404");
+      statusCell.setBackground('#fff3cd').setFontColor('#856404');
     }
 
-    // Send yourself a notification email
-    sendNotificationEmail(payload, status, ratingNum);
+    // Colour-code the Review Type cell
+    var typeColors = {
+      'Book':           { bg: '#dce8ff', fg: '#1a3a6b' },
+      'Creator App':    { bg: '#e8d5ff', fg: '#4a1a6b' },
+      'Tutorial':       { bg: '#fde8c8', fg: '#6b3a00' },
+      'Website / Blog': { bg: '#d5f0e8', fg: '#0a4a2a' }
+    };
+    var typeColor = typeColors[reviewType];
+    if (typeColor) {
+      sheet.getRange(lastRow, 3).setBackground(typeColor.bg).setFontColor(typeColor.fg);
+    }
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: "success" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    sendNotificationEmail(payload, status, ratingNum, reviewType);
+
+    return jsonResponse({ result: 'success' });
 
   } catch (err) {
-    Logger.log("doPost error: " + err.toString());
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: "error", message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    Logger.log('doPost error: ' + err.toString());
+    return jsonResponse({ result: 'error', message: err.toString() });
   }
 }
 
-// ------------------------------------------------------------
-//  doGet — returns approved reviews as JSON for the display page
-// ------------------------------------------------------------
+// ============================================================
+//  doGet — returns approved reviews as JSON for reviews.html
+// ============================================================
 function doGet(e) {
   try {
-    const ss    = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = ss.getSheetByName(SHEET_NAME);
+    var sheet = getOrCreateSheet();
+    var data  = sheet.getDataRange().getValues();
 
-    if (!sheet) {
+    if (data.length < 2) {
       return jsonResponse({ reviews: [] });
     }
 
-    const data    = sheet.getDataRange().getValues();
-    const headers = data[0];
-    const rows    = data.slice(1);
+    var rows = data.slice(1); // skip header row
 
-    const reviews = rows
-      .filter(row => row[1] === "Approved" && row[8]) // Status = Approved & has review body
-      .map(row => ({
-        timestamp:       row[0],
-        rating:          row[2],
-        ratingLabel:     row[3],
-        bookCategory:    row[4],
-        bookTitle:       row[5],
-        reviewHeadline:  row[7],
-        reviewBody:      row[8],
-        readerType:      row[9],
-        displayName:     row[13]
-      }))
+    var reviews = rows
+      .filter(function(row) {
+        return row[1] === 'Approved' && row[14]; // Status=Approved & has review body
+      })
+      .map(function(row) {
+        return {
+          timestamp:      row[0],
+          status:         row[1],
+          reviewType:     row[2],
+          rating:         row[3],
+          ratingLabel:    row[4],
+          bookCategory:   row[5],
+          bookTitle:      row[6],
+          appName:        row[8],
+          tutorialTopic:  row[9],
+          tutorialName:   row[10],
+          websiteArea:    row[11],
+          reviewHeadline: row[13],
+          reviewBody:     row[14],
+          readerType:     row[15],
+          displayName:    row[20]
+        };
+      })
       .reverse(); // newest first
 
     return jsonResponse({ reviews: reviews });
 
   } catch (err) {
-    Logger.log("doGet error: " + err.toString());
+    Logger.log('doGet error: ' + err.toString());
     return jsonResponse({ reviews: [], error: err.toString() });
   }
 }
 
-// ------------------------------------------------------------
-//  Helper: return JSON response with CORS headers
-// ------------------------------------------------------------
+// ============================================================
+//  Helper: get or create the Reviews sheet with headers
+// ============================================================
+function getOrCreateSheet() {
+  var ss    = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+    sheet.appendRow(HEADERS);
+
+    // Formatting
+    var headerRange = sheet.getRange('1:1');
+    headerRange
+      .setFontWeight('bold')
+      .setBackground('#3d5c40')
+      .setFontColor('#f5f0e8');
+
+    sheet.setFrozenRows(1);
+
+    // Set column widths
+    sheet.setColumnWidth(1, 160);  // Timestamp
+    sheet.setColumnWidth(2, 90);   // Status
+    sheet.setColumnWidth(3, 110);  // Review Type
+    sheet.setColumnWidth(4, 80);   // Rating num
+    sheet.setColumnWidth(5, 110);  // Rating label
+    sheet.setColumnWidth(6, 160);  // Book Category
+    sheet.setColumnWidth(7, 200);  // Book Title
+    sheet.setColumnWidth(8, 140);  // Where Purchased
+    sheet.setColumnWidth(9, 200);  // App Name
+    sheet.setColumnWidth(10, 180); // Tutorial Topic
+    sheet.setColumnWidth(11, 220); // Tutorial Name
+    sheet.setColumnWidth(12, 160); // Website Area
+    sheet.setColumnWidth(13, 160); // How Heard
+    sheet.setColumnWidth(14, 220); // Review Headline
+    sheet.setColumnWidth(15, 380); // Review Body
+    sheet.setColumnWidth(16, 140); // Reader Type
+    sheet.setColumnWidth(17, 120); // First Name
+    sheet.setColumnWidth(18, 180); // Email
+    sheet.setColumnWidth(19, 200); // Public Consent
+    sheet.setColumnWidth(20, 100); // Age Confirmed
+    sheet.setColumnWidth(21, 120); // Display Name
+  }
+
+  return sheet;
+}
+
+// ============================================================
+//  Helper: parse POST payload (JSON or form-encoded)
+// ============================================================
+function parsePayload(e) {
+  var payload = {};
+  try {
+    if (e && e.postData && e.postData.contents) {
+      payload = JSON.parse(e.postData.contents);
+    }
+  } catch (err) {
+    // Fall back to form parameters
+    payload = (e && e.parameter) ? e.parameter : {};
+  }
+  return payload;
+}
+
+// ============================================================
+//  Helper: return JSON response
+// ============================================================
 function jsonResponse(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// ------------------------------------------------------------
-//  Helper: email notification to you on each new submission
-// ------------------------------------------------------------
-function sendNotificationEmail(payload, status, ratingNum) {
+// ============================================================
+//  Helper: send notification email on each submission
+// ============================================================
+function sendNotificationEmail(payload, status, ratingNum, reviewType) {
   try {
-    const recipient = Session.getActiveUser().getEmail();
-    const stars     = "★".repeat(ratingNum) + "☆".repeat(5 - ratingNum);
-    const subject   = `[RLB Reviews] ${status === "Approved" ? "✅ New Review Live" : "⏳ Review Needs Approval"} — ${payload.book_title || "Unknown Title"}`;
+    var recipient = Session.getActiveUser().getEmail();
+    var stars     = ratingNum > 0
+      ? ('★'.repeat(ratingNum) + '☆'.repeat(5 - ratingNum) + ' (' + ratingNum + '/5)')
+      : 'No rating given';
 
-    const body = `
-A new reader review has been submitted.
+    var statusIcon = status === 'Approved' ? '✅' : '⏳';
+    var subject    = '[RLB Reviews] ' + statusIcon + ' New ' + reviewType + ' Review';
 
-Status:    ${status}
-Rating:    ${stars} (${ratingNum}/5)
-Book:      ${payload.book_title || "Not specified"}
-Category:  ${payload.book_category || "Not specified"}
-Reviewer:  ${payload.first_name || "Anonymous"}
-Headline:  ${payload.review_headline || ""}
+    // Build the subject line detail based on type
+    var subjectDetail = '';
+    if (reviewType === 'Book')           { subjectDetail = payload.book_title || 'Unknown Title'; }
+    if (reviewType === 'Creator App')    { subjectDetail = payload.app_name   || 'Unknown App'; }
+    if (reviewType === 'Tutorial')       { subjectDetail = payload.tutorial_name || payload.tutorial_topic || 'Unknown Tutorial'; }
+    if (reviewType === 'Website / Blog') { subjectDetail = payload.website_area  || 'General'; }
+    if (subjectDetail) { subject += ' — ' + subjectDetail; }
 
-Review:
-${payload.review_body || ""}
+    var body = [
+      'A new review has been submitted on RLBDesigns.com.',
+      '',
+      'STATUS:       ' + status,
+      'TYPE:         ' + reviewType,
+      'RATING:       ' + stars,
+      ''
+    ];
 
-${status === "Pending" ? "👉 Open your Reviews Sheet to approve or reject this review." : "✅ This review was auto-approved and is now live on your site."}
+    if (reviewType === 'Book') {
+      body.push('CATEGORY:     ' + (payload.book_category || '—'));
+      body.push('TITLE:        ' + (payload.book_title    || '—'));
+    }
+    if (reviewType === 'Creator App') {
+      body.push('APP:          ' + (payload.app_name || '—'));
+    }
+    if (reviewType === 'Tutorial') {
+      body.push('TUTORIAL:     ' + (payload.tutorial_topic || '—'));
+      body.push('SPECIFIC:     ' + (payload.tutorial_name  || '—'));
+    }
+    if (reviewType === 'Website / Blog') {
+      body.push('AREA:         ' + (payload.website_area || '—'));
+    }
 
-— RLB Designs Review System
-    `.trim();
+    body.push('');
+    body.push('REVIEWER:     ' + (payload.first_name || 'Anonymous'));
+    body.push('HEADLINE:     ' + (payload.review_headline || '—'));
+    body.push('');
+    body.push('REVIEW:');
+    body.push(payload.review_body || '—');
+    body.push('');
+    body.push('CONSENT:      ' + (payload.public_consent || '—'));
+    body.push('');
 
-    MailApp.sendEmail(recipient, subject, body);
+    if (status === 'Pending') {
+      body.push('👉 Open your Reviews Sheet to approve or reject this review.');
+      body.push('   Change column B from "Pending" to "Approved" to publish it.');
+    } else {
+      body.push('✅ This review was auto-approved and is now live on your site.');
+    }
+
+    body.push('');
+    body.push('— RLB Designs Review System v2.0');
+
+    MailApp.sendEmail(recipient, subject, body.join('\n'));
+
   } catch (err) {
-    Logger.log("Email error: " + err.toString());
+    Logger.log('Email error: ' + err.toString());
   }
 }
 
-// ------------------------------------------------------------
-//  Utility: run this once manually to create headers if needed
-// ------------------------------------------------------------
+// ============================================================
+//  Utility: run this ONCE manually after pasting to verify
+//  setup — creates the sheet and headers if they don't exist
+// ============================================================
 function setupSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss.getSheetByName(SHEET_NAME)) {
-    doPost({ postData: { contents: JSON.stringify({
-      rating: "5 stars — Outstanding!",
-      book_category: "Test",
-      book_title: "Setup Test",
-      review_headline: "Setup",
-      review_body: "This is a setup test review body.",
-      first_name: "Rachel",
-      consent: "Yes"
-    })}});
-  }
-  Logger.log("Setup complete.");
+  var sheet = getOrCreateSheet();
+  Logger.log('Setup complete. Sheet "' + SHEET_NAME + '" is ready with ' + HEADERS.length + ' columns.');
 }
