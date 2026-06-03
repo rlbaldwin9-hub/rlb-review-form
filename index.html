@@ -117,51 +117,41 @@
 
     .hint { font-size: 11px; color: var(--muted); margin-top: 5px; font-style: italic; }
 
-    /* ── Review type selector tiles ── */
+    /* ── Review type tiles ── */
     .review-type-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 0;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
     }
 
     .type-tile input[type="radio"] { display: none; }
 
     .type-tile label {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 6px; padding: 14px 8px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 6px; padding: 14px 8px;
       border: 1.5px solid var(--border); border-radius: 10px;
-      cursor: pointer; text-align: center;
-      transition: all 0.15s; background: #fff;
-      min-height: 90px;
+      cursor: pointer; text-align: center; transition: all 0.15s;
+      background: #fff; min-height: 90px;
     }
 
     .type-tile label .tile-icon { font-size: 24px; line-height: 1; }
     .type-tile label .tile-name { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; line-height: 1.3; }
 
-    .type-tile label:hover {
-      border-color: var(--sage); background: var(--sage-lt);
-    }
+    .type-tile label:hover { border-color: var(--sage); background: var(--sage-lt); }
 
     .type-tile input[type="radio"]:checked + label {
       border-color: var(--sage-dk); background: var(--sage-lt);
       box-shadow: 0 0 0 3px #7a9e7e22;
     }
 
-    .type-tile input[type="radio"]:checked + label .tile-name {
-      color: var(--sage-dk);
-    }
+    .type-tile input[type="radio"]:checked + label .tile-name { color: var(--sage-dk); }
 
-    /* ── Dynamic sections (shown/hidden by JS) ── */
+    /* ── Dynamic sections ── */
     .dynamic-section { display: none; margin-top: 1.25rem; }
     .dynamic-section.visible { display: block; }
 
-    /* ── App card list in dropdown ── */
+    /* ── App description preview ── */
     .app-description {
       font-size: 11px; color: var(--muted);
-      margin-top: 4px; font-style: italic; line-height: 1.4;
-      padding: 0 2px;
+      margin-top: 4px; font-style: italic; line-height: 1.4; padding: 0 2px;
     }
 
     /* ── CSS-only stars ── */
@@ -187,7 +177,7 @@
       font-style: italic; min-width: 90px; order: 99;
     }
 
-    /* ── Reader chips ── */
+    /* ── Chips ── */
     .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0; }
 
     .chip input[type="radio"] { display: none; }
@@ -218,7 +208,7 @@
     .disclaimer-box p { font-size: 12px; color: #5a4a2a; line-height: 1.65; }
     .disclaimer-box strong { font-weight: 700; color: #3d2e0f; }
 
-    /* ── Consent Yes/No ── */
+    /* ── Consent ── */
     .consent-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem; }
 
     .consent-option {
@@ -292,13 +282,11 @@
     .footer a { color: var(--sage-dk); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
 
-    /* ── Optional badge ── */
     .optional-badge {
-      display: inline-block;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--muted);
-      background: #f0ebe0; border-radius: 10px;
-      padding: 2px 8px; margin-left: 8px; vertical-align: middle;
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+      background: #f0ebe0; border-radius: 10px; padding: 2px 8px;
+      margin-left: 8px; vertical-align: middle;
     }
   </style>
 </head>
@@ -315,44 +303,30 @@
 
   <form id="review-form" novalidate>
 
-    <!-- ══════════════════════════════════════
-         STEP 1 — WHAT ARE YOU REVIEWING?
-    ══════════════════════════════════════ -->
+    <!-- ══ STEP 1 — WHAT ARE YOU REVIEWING ══ -->
     <div class="card">
       <div class="card-title">What Are You Reviewing? <span class="req">*</span></div>
 
       <div class="review-type-grid">
         <div class="type-tile">
           <input type="radio" name="review_type" id="type-book" value="Book">
-          <label for="type-book">
-            <span class="tile-icon">📚</span>
-            <span class="tile-name">A Book</span>
-          </label>
+          <label for="type-book"><span class="tile-icon">📚</span><span class="tile-name">A Book</span></label>
         </div>
         <div class="type-tile">
           <input type="radio" name="review_type" id="type-app" value="Creator App">
-          <label for="type-app">
-            <span class="tile-icon">📱</span>
-            <span class="tile-name">A Creator App</span>
-          </label>
+          <label for="type-app"><span class="tile-icon">📱</span><span class="tile-name">A Creator App</span></label>
         </div>
         <div class="type-tile">
           <input type="radio" name="review_type" id="type-tutorial" value="Tutorial">
-          <label for="type-tutorial">
-            <span class="tile-icon">🎓</span>
-            <span class="tile-name">A Tutorial</span>
-          </label>
+          <label for="type-tutorial"><span class="tile-icon">🎓</span><span class="tile-name">A Tutorial</span></label>
         </div>
         <div class="type-tile">
           <input type="radio" name="review_type" id="type-website" value="Website / Blog">
-          <label for="type-website">
-            <span class="tile-icon">🌐</span>
-            <span class="tile-name">Website / Blog</span>
-          </label>
+          <label for="type-website"><span class="tile-icon">🌐</span><span class="tile-name">Website / Blog</span></label>
         </div>
       </div>
 
-      <!-- ── BOOK fields ── -->
+      <!-- BOOK fields -->
       <div class="dynamic-section" id="section-book">
         <div class="field">
           <label class="field-label" for="book-category">Book Category <span class="req">*</span></label>
@@ -394,26 +368,26 @@
         </div>
       </div>
 
-      <!-- ── CREATOR APP fields ── -->
+      <!-- APP fields -->
       <div class="dynamic-section" id="section-app">
         <div class="field">
           <label class="field-label" for="app-name">Which App? <span class="req">*</span></label>
           <select id="app-name" name="app_name">
             <option value="">Select an app…</option>
-            <option value="Alpha-Gal Safe Recipe Finder">Alpha-Gal Safe Recipe Finder — Free recipe search app for Alpha-Gal Syndrome safe, mammal-free meals</option>
-            <option value="Story Forge">Story Forge — AI-assisted app for building and developing your children's storybook from concept to complete</option>
-            <option value="Reading Journal">Reading Journal — Track RLB books you've read, are reading, and want to read next; includes wish list and notes</option>
-            <option value="My Cookbook Builder">My Cookbook Builder — Build a complete cookbook from scratch; add recipes, name your book, and download the finished file</option>
-            <option value="Cookbook Creator Toolkit">Cookbook Creator Toolkit — Full concept planner for designing and organizing your cookbook from start to finish</option>
-            <option value="Coloring Book Studio Pro">Coloring Book Studio Pro — Cover-to-cover coloring book builder with bonus pages and AI image prompts for 300dpi KDP/IngramSpark-ready files</option>
-            <option value="Coloring Book Planner">Coloring Book Planner — Brainstorm themes, build your prompt strategy, and quality-check before you generate a single page</option>
-            <option value="Coloring Book Page Prompt Creator">Coloring Book Page Prompt Creator — Single-page prompt builder with creative ideas and starting points for every style</option>
+            <option value="Alpha-Gal Safe Recipe Finder">Alpha-Gal Safe Recipe Finder</option>
+            <option value="Story Forge">Story Forge</option>
+            <option value="Reading Journal">Reading Journal</option>
+            <option value="My Cookbook Builder">My Cookbook Builder</option>
+            <option value="Cookbook Creator Toolkit">Cookbook Creator Toolkit</option>
+            <option value="Coloring Book Studio Pro">Coloring Book Studio Pro</option>
+            <option value="Coloring Book Planner">Coloring Book Planner</option>
+            <option value="Coloring Book Page Prompt Creator">Coloring Book Page Prompt Creator</option>
           </select>
+          <div id="app-desc-wrap" class="app-description"></div>
         </div>
-        <div id="app-desc-wrap" class="app-description"></div>
       </div>
 
-      <!-- ── TUTORIAL fields ── -->
+      <!-- TUTORIAL fields -->
       <div class="dynamic-section" id="section-tutorial">
         <div class="field">
           <label class="field-label" for="tutorial-app">Tutorial Topic <span class="req">*</span></label>
@@ -437,7 +411,7 @@
         </div>
       </div>
 
-      <!-- ── WEBSITE fields ── -->
+      <!-- WEBSITE fields -->
       <div class="dynamic-section" id="section-website">
         <div class="field">
           <label class="field-label" for="website-area">Which Part of the Site? <span class="req">*</span></label>
@@ -453,12 +427,9 @@
           </select>
         </div>
       </div>
-
     </div>
 
-    <!-- ══════════════════════════════════════
-         HOW DID YOU HEAR ABOUT US
-    ══════════════════════════════════════ -->
+    <!-- ══ HOW DID YOU FIND US ══ -->
     <div class="card" id="card-how-heard" style="display:none;">
       <div class="card-title">How Did You Find Us?</div>
       <div class="field">
@@ -479,13 +450,15 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         STAR RATING
-    ══════════════════════════════════════ -->
+    <!-- ══ STAR RATING ══ -->
     <div class="card" id="card-stars" style="display:none;">
-      <div class="card-title" id="stars-card-title">Your Rating</div>
+      <div class="card-title">Your Rating</div>
       <div class="field">
-        <label class="field-label" id="stars-label">Overall Rating <span class="req" id="stars-req">*</span> <span class="optional-badge" id="stars-optional" style="display:none;">Optional</span></label>
+        <label class="field-label">
+          Overall Rating
+          <span class="req" id="stars-req">*</span>
+          <span class="optional-badge" id="stars-optional" style="display:none;">Optional</span>
+        </label>
         <div class="stars-css">
           <input type="radio" name="star_select" id="s5" value="5">
           <label for="s5" title="Outstanding!">★</label>
@@ -503,9 +476,7 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         YOUR REVIEW
-    ══════════════════════════════════════ -->
+    <!-- ══ YOUR REVIEW ══ -->
     <div class="card" id="card-review" style="display:none;">
       <div class="card-title">Your Review</div>
 
@@ -520,17 +491,11 @@
         <p class="hint">Minimum 20 characters. Your words help other readers and users find what they need!</p>
       </div>
 
+      <!-- Dynamic I Am chips — swapped by JS -->
       <div class="field">
-        <label class="field-label">I am… <span style="font-weight:300;font-style:italic;text-transform:none;letter-spacing:0;">(optional)</span></label>
-        <div class="chips">
-          <div class="chip"><input type="radio" name="reader_type" id="r1" value="A Parent"><label for="r1">A Parent</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r2" value="A Grandparent"><label for="r2">A Grandparent</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r3" value="An Educator"><label for="r3">An Educator</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r4" value="An Adult Reader"><label for="r4">An Adult Reader</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r5" value="A Young Reader"><label for="r5">A Young Reader</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r6" value="An App User"><label for="r6">An App User</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r7" value="A Publisher / Author"><label for="r7">A Publisher / Author</label></div>
-          <div class="chip"><input type="radio" name="reader_type" id="r8" value="Other"><label for="r8">Other…</label></div>
+        <label class="field-label" id="iam-label">I am… <span style="font-weight:300;font-style:italic;text-transform:none;letter-spacing:0;font-size:11px;">(optional)</span></label>
+        <div class="chips" id="iam-chips">
+          <!-- Populated by JavaScript based on review type -->
         </div>
         <div id="other-reader-wrap">
           <input type="text" id="other-reader-text" placeholder="Tell us a little about yourself…" />
@@ -538,9 +503,7 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         ABOUT YOU
-    ══════════════════════════════════════ -->
+    <!-- ══ ABOUT YOU ══ -->
     <div class="card" id="card-about" style="display:none;">
       <div class="card-title">About You <span style="font-family:'Lato',sans-serif;font-size:12px;font-weight:300;font-style:italic;color:var(--muted);">optional</span></div>
       <div class="row-2">
@@ -556,9 +519,7 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         PERMISSIONS & LEGAL
-    ══════════════════════════════════════ -->
+    <!-- ══ PERMISSIONS ══ -->
     <div class="card" id="card-consent" style="display:none;">
       <div class="card-title">Permissions &amp; Confirmation</div>
 
@@ -608,7 +569,6 @@
 
   </form>
 
-  <!-- SUCCESS SCREEN -->
   <div class="success" id="success-screen">
     <span class="success-icon">✦</span>
     <h2>Thank You!</h2>
@@ -629,44 +589,120 @@
   var currentRating = 0;
   var starsRequired = true;
 
-  /* -- App descriptions for display under dropdown -- */
-  var appDescriptions = {
-    'Alpha-Gal Safe Recipe Finder':       'Free recipe search for Alpha-Gal Syndrome — mammal-free, dairy-free, and clean eating meals.',
-    'Story Forge':                         'AI-powered app for building your children\'s storybook from first idea to finished draft.',
-    'Reading Journal':                     'Track every RLB book you\'ve read, are reading, or want to read — with notes and a wish list.',
-    'My Cookbook Builder':                 'Add your recipes, name your book, and download a fully formatted cookbook file.',
-    'Cookbook Creator Toolkit':            'Full concept planner for mapping out and organizing your cookbook from cover to cover.',
-    'Coloring Book Studio Pro':            'Build a complete print-ready coloring book — cover, interior pages, bonus pages, and 300dpi AI image prompts for KDP/IngramSpark.',
-    'Coloring Book Planner':               'Brainstorm themes, build your prompt strategy, and quality-check your concept before generating a single page.',
-    'Coloring Book Page Prompt Creator':   'Single-page prompt builder packed with creative ideas and starting points for every coloring style.'
+  /* ── "I am…" chip sets per review type ── */
+  var iAmSets = {
+    'Book': [
+      'A Parent',
+      'A Grandparent',
+      'An Educator',
+      'An Adult Reader',
+      'A Young Reader',
+      'Other'
+    ],
+    'Creator App': [
+      'A Hobbyist / Crafter',
+      'A Self-Publisher',
+      'An Indie Author',
+      'A Small Business Owner',
+      'A Teacher / Educator',
+      'A First-Time Creator',
+      'Other'
+    ],
+    'Tutorial': [
+      'A Complete Beginner',
+      'Somewhat Familiar — Learning More',
+      'An Experienced User',
+      'A Teacher Sharing This Resource',
+      'Other'
+    ],
+    'Website / Blog': [
+      'A New Visitor',
+      'A Returning Reader',
+      'A Fellow Author / Publisher',
+      'A Fan of the Blog',
+      'Other'
+    ]
   };
 
-  /* -- Show/hide cards based on review type selection -- */
+  /* ── App descriptions ── */
+  var appDescriptions = {
+    'Alpha-Gal Safe Recipe Finder':     'Free recipe search for Alpha-Gal Syndrome — mammal-free, dairy-free, and clean eating meals.',
+    'Story Forge':                       'AI-powered app for building your children\'s storybook from first idea to finished draft.',
+    'Reading Journal':                   'Track every RLB book you\'ve read, are reading, or want to read — with notes and a wish list.',
+    'My Cookbook Builder':               'Add your recipes, name your book, and download a fully formatted cookbook file.',
+    'Cookbook Creator Toolkit':          'Full concept planner for mapping out and organizing your cookbook from cover to cover.',
+    'Coloring Book Studio Pro':          'Build a complete print-ready coloring book — cover, interior, bonus pages, and 300dpi AI image prompts for KDP/IngramSpark.',
+    'Coloring Book Planner':             'Brainstorm themes, build your prompt strategy, and quality-check before generating a single page.',
+    'Coloring Book Page Prompt Creator': 'Single-page prompt builder packed with creative ideas and starting points for every coloring style.'
+  };
+
+  /* ── Build "I am…" chips for the given review type ── */
+  function buildIAmChips(type) {
+    var container = document.getElementById('iam-chips');
+    var options   = iAmSets[type] || iAmSets['Book'];
+    container.innerHTML = '';
+
+    options.forEach(function(val, idx) {
+      var div   = document.createElement('div');
+      div.className = 'chip';
+
+      var input = document.createElement('input');
+      input.type  = 'radio';
+      input.name  = 'reader_type';
+      input.id    = 'r_' + idx;
+      input.value = val;
+
+      var label = document.createElement('label');
+      label.htmlFor    = 'r_' + idx;
+      label.textContent = val === 'Other' ? 'Other…' : val;
+
+      div.appendChild(input);
+      div.appendChild(label);
+      container.appendChild(div);
+
+      // Attach event listeners
+      input.addEventListener('change', checkOtherReader);
+      input.addEventListener('click',  checkOtherReader);
+      label.addEventListener('click', function() { setTimeout(checkOtherReader, 10); });
+    });
+
+    // Hide other text field when chips rebuild
+    document.getElementById('other-reader-wrap').style.display = 'none';
+    document.getElementById('other-reader-text').value = '';
+  }
+
+  /* ── Handle review type selection ── */
   function handleTypeChange() {
     var selected = document.querySelector('input[name="review_type"]:checked');
     if (!selected) return;
     var type = selected.value;
 
-    /* Hide all dynamic sections first */
-    document.querySelectorAll('.dynamic-section').forEach(function(s) { s.classList.remove('visible'); });
+    // Hide all dynamic sections
+    document.querySelectorAll('.dynamic-section').forEach(function(s) {
+      s.classList.remove('visible');
+    });
 
-    /* Show the right section */
+    // Show relevant section
     if (type === 'Book')           { document.getElementById('section-book').classList.add('visible'); }
     if (type === 'Creator App')    { document.getElementById('section-app').classList.add('visible'); }
     if (type === 'Tutorial')       { document.getElementById('section-tutorial').classList.add('visible'); }
     if (type === 'Website / Blog') { document.getElementById('section-website').classList.add('visible'); }
 
-    /* Stars: required for books, optional for everything else */
+    // Stars required for books only
     starsRequired = (type === 'Book');
-    document.getElementById('stars-req').style.display     = starsRequired ? 'inline' : 'none';
-    document.getElementById('stars-optional').style.display = starsRequired ? 'none'   : 'inline-block';
+    document.getElementById('stars-req').style.display      = starsRequired ? 'inline'       : 'none';
+    document.getElementById('stars-optional').style.display = starsRequired ? 'none'         : 'inline-block';
 
-    /* Show all subsequent cards */
-    var cards = ['card-how-heard', 'card-stars', 'card-review', 'card-about', 'card-consent'];
-    cards.forEach(function(id) { document.getElementById(id).style.display = 'block'; });
+    // Build the correct "I am…" chip set
+    buildIAmChips(type);
+
+    // Reveal all subsequent cards
+    ['card-how-heard','card-stars','card-review','card-about','card-consent'].forEach(function(id) {
+      document.getElementById(id).style.display = 'block';
+    });
     document.getElementById('submit-btn').style.display = 'block';
 
-    /* Scroll smoothly to next card */
+    // Smooth scroll to next section
     setTimeout(function() {
       document.getElementById('card-how-heard').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
@@ -677,14 +713,14 @@
     r.addEventListener('click',  handleTypeChange);
   });
 
-  /* -- App description preview -- */
+  /* ── App description preview ── */
   document.getElementById('app-name').addEventListener('change', function() {
     var wrap = document.getElementById('app-desc-wrap');
     var desc = appDescriptions[this.value];
     wrap.textContent = desc ? '💡 ' + desc : '';
   });
 
-  /* -- Stars -- */
+  /* ── Stars ── */
   document.querySelectorAll('input[name="star_select"]').forEach(function(r) {
     r.addEventListener('change', function() {
       currentRating = parseInt(this.value, 10);
@@ -693,7 +729,7 @@
     });
   });
 
-  /* -- Other reader type -- */
+  /* ── Other reader type ── */
   function checkOtherReader() {
     var sel  = document.querySelector('input[name="reader_type"]:checked');
     var wrap = document.getElementById('other-reader-wrap');
@@ -705,16 +741,7 @@
     }
   }
 
-  document.querySelectorAll('input[name="reader_type"]').forEach(function(r) {
-    r.addEventListener('change', checkOtherReader);
-    r.addEventListener('click',  checkOtherReader);
-  });
-
-  document.querySelectorAll('.chip label').forEach(function(l) {
-    l.addEventListener('click', function() { setTimeout(checkOtherReader, 10); });
-  });
-
-  /* -- Submit -- */
+  /* ── Submit ── */
   document.getElementById('review-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -722,23 +749,21 @@
     if (!reviewType) { alert('Please select what you are reviewing.'); return; }
     var type = reviewType.value;
 
-    /* Type-specific validation */
     if (type === 'Book') {
-      if (!document.getElementById('book-category').value) { alert('Please select a book category.'); return; }
-      if (!document.getElementById('book-title').value.trim()) { alert('Please enter the book title.'); return; }
+      if (!document.getElementById('book-category').value)      { alert('Please select a book category.'); return; }
+      if (!document.getElementById('book-title').value.trim())  { alert('Please enter the book title.'); return; }
     }
     if (type === 'Creator App') {
       if (!document.getElementById('app-name').value) { alert('Please select which app you are reviewing.'); return; }
     }
     if (type === 'Tutorial') {
-      if (!document.getElementById('tutorial-app').value)  { alert('Please select the tutorial topic.'); return; }
-      if (!document.getElementById('tutorial-name').value.trim()) { alert('Please tell us which tutorial specifically.'); return; }
+      if (!document.getElementById('tutorial-app').value)              { alert('Please select the tutorial topic.'); return; }
+      if (!document.getElementById('tutorial-name').value.trim())      { alert('Please tell us which tutorial specifically.'); return; }
     }
     if (type === 'Website / Blog') {
       if (!document.getElementById('website-area').value) { alert('Please select which part of the site you are reviewing.'); return; }
     }
 
-    /* Stars required only for books */
     if (starsRequired && !currentRating) { alert('Please select a star rating.'); return; }
 
     var headline = document.getElementById('review-headline').value.trim();
@@ -762,7 +787,6 @@
       readerType = readerValue ? readerValue : 'Not specified';
     }
 
-    /* Build payload */
     var fields = {
       review_type:     type,
       book_category:   document.getElementById('book-category').value,
@@ -788,10 +812,10 @@
     btn.textContent = 'Sending…';
 
     /* Native form POST — bypasses Google Sites sandbox */
-    var nativeForm    = document.createElement('form');
-    nativeForm.method = 'POST';
-    nativeForm.action = SCRIPT_URL;
-    nativeForm.target = '_blank';
+    var nativeForm       = document.createElement('form');
+    nativeForm.method    = 'POST';
+    nativeForm.action    = SCRIPT_URL;
+    nativeForm.target    = '_blank';
     nativeForm.style.display = 'none';
 
     Object.keys(fields).forEach(function(key) {
@@ -806,7 +830,6 @@
     nativeForm.submit();
     document.body.removeChild(nativeForm);
 
-    /* Show thank-you immediately */
     document.getElementById('review-form').style.display    = 'none';
     document.getElementById('success-screen').style.display  = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
